@@ -1,16 +1,14 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: jack
- * Date: 1/19/2016
- * Time: 8:57 AM
- */
 @extends('layout')
 
-
-
 @section('content')
+    <div class="jumbotron">
+        <div class="container">
+            <h1>Image Server</h1>
+            <p></p>
+            <p><a class="btn btn-primary btn-lg" href="#" role="button">Add Image&raquo;</a></p>
+        </div>
+    </div>
 
-    <h1>Penguin</h1>
+
 
 @stop
