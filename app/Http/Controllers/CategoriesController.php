@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
+use App\Category;
+use App\Http\Requests\CategoryRequest;
 use App\Http\Controllers\Controller;
 
-class ImagesController extends Controller
+class CategoriesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -26,9 +26,8 @@ class ImagesController extends Controller
      */
     public function create()
     {
-
-        return view('images.create');
-
+        //flash('Time to Create','Hello World','info');
+        return view('categories.create');
     }
 
     /**
@@ -37,10 +36,14 @@ class ImagesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+
+    public function store(CategoryRequest $request)
     {
-        //validate form
-        //return view('images.create');
+        //persist the images
+        Category::create($request->all());
+        //flash()->success('We have Stored','Hello World','info');
+        flash()->overlay('We have Stored','Hello World');
+        return redirect()->back();
     }
 
     /**

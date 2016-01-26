@@ -1,5 +1,14 @@
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
+@import "partials/forms";
+
 body {
   padding-top: 70px;
+}
+
+hr {
+  height: 2px;
+  background-color:#555;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }

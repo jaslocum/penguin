@@ -5749,7 +5749,16 @@ button.close {
   .hidden-print {
     display: none !important; } }
 
+.form-control {
+  height: 39px; }
+
 body {
   padding-top: 70px; }
+
+hr {
+  height: 2px;
+  background-color: #555;
+  margin-top: 20px;
+  margin-bottom: 20px; }
 
 /*# sourceMappingURL=app.css.map */

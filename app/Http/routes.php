@@ -11,11 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('pages.home');
-});
-
-Route::resource('images','ImagesController');
 
 /*
 |--------------------------------------------------------------------------
@@ -29,5 +24,15 @@ Route::resource('images','ImagesController');
 */
 
 Route::group(['middleware' => ['web']], function () {
-    //
+
+    Route::resource('images','ImagesController');
+
+    Route::resource('categories','CategoriesController');
+
+    Route::get('/', function () {
+        //return redirect()->action('CategoriesController@create');
+        //return view('categories.create');
+        return redirect('categories/create');
+    });
+
 });
