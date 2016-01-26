@@ -5752,6 +5752,10 @@ button.close {
 .form-control {
   height: 39px; }
 
+.row {
+  margin-left: 20px;
+  margin-right: 20px; }
+
 body {
   padding-top: 70px; }
 

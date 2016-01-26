@@ -24,7 +24,7 @@
                     <!--<li class="active"><a href="#home">Home</a></li>-->
                     <!--<li class="active"><a href="/">Home</a></li>-->
                     <!--<li ><a href="#about">About</a></li>-->
-                    <!--<li><a href="/categories/create">Add</a></li>-->
+                    <li><a href="/categories/create">Add</a></li>
                     <!--<li><a href="#contact">Contact</a></li>-->
                 </ul>
             </div><!--/.nav-collapse -->
