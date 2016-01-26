@@ -26,7 +26,6 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        //flash('Time to Create','Hello World','info');
         return view('categories.create');
     }
 
@@ -41,8 +40,7 @@ class CategoriesController extends Controller
     {
         //persist the images
         Category::create($request->all());
-        //flash()->success('We have Stored','Hello World','info');
-        flash()->overlay('We have Stored','Hello World');
+        //flash()->overlay('We have Stored','Hello World');
         return redirect()->back();
     }
 
@@ -52,9 +50,19 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($category, $category_rec_id)
     {
         //
+        //return view('categories.show',['category'=>$category,'category_rec_id'=>$category_rec_id]);
+        $category_rec = Category::where(compact('category', 'category_rec_id'))->first();
+        return view('categories.show',compact('category_rec'));
+    }
+
+    public function addImages(Request $request)
+    {
+        $file = $request->file('file');
+        $name = $file->getClientOriginalName();
+        $file->move('images',$name);
     }
 
     /**
