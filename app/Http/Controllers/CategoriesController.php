@@ -38,10 +38,21 @@ class CategoriesController extends Controller
 
     public function store(CategoryRequest $request)
     {
+        $category = $request->request->get('category');
+        $category_rec_id = $request->request->get('category_rec_id');
+
+        $category_rec = Category::where(compact('category', 'category_rec_id'))->first();
+
         //persist the images
-        Category::create($request->all());
-        //flash()->overlay('We have Stored','Hello World');
-        return redirect()->back();
+        if (empty($category_rec)) {
+            Category::create($request->all());
+        }
+
+        return redirect()->action("CategoriesController@show",
+            [
+                'category' => $category,
+                'category_rec_id' => $category_rec_id,
+            ]);
     }
 
     /**
@@ -55,7 +66,11 @@ class CategoriesController extends Controller
         //
         //return view('categories.show',['category'=>$category,'category_rec_id'=>$category_rec_id]);
         $category_rec = Category::where(compact('category', 'category_rec_id'))->first();
-        return view('categories.show',compact('category_rec'));
+        if($category_rec) {
+            return view('categories.show', compact('category_rec'));
+        } else {
+            return "Category has not been added...";
+        }
     }
 
     public function images(Request $request)
