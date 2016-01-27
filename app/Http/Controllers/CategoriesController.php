@@ -58,7 +58,7 @@ class CategoriesController extends Controller
         return view('categories.show',compact('category_rec'));
     }
 
-    public function addImages(Request $request)
+    public function images(Request $request)
     {
         $file = $request->file('file');
         $name = $file->getClientOriginalName();
