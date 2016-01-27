@@ -25,19 +25,10 @@
 
 Route::group(['middleware' => ['web']], function () {
 
-    Route::resource('images','ImagesController');
-
-    Route::resource('categories','CategoriesController');
-
-    Route::get('{category}/{category_rec_id}', 'CategoriesController@show');
-
-    Route::post('{category}/{category_rec_id}/images', 'CategoriesController@addImages');
+    Route::post('{category}/{category_rec_id}', 'CategoriesController@images');
 
     Route::get('/', function () {
         return view('pages.home');
-        //return redirect()->action('CategoriesController@create');
-        //return view('categories.create');
-        //return redirect('categories/create');
     });
 
 });
