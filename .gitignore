@@ -1,7 +1,0 @@
-/vendor
-/node_modules
-/phpmyadmin
-Homestead.yaml
-Homestead.json
-.env
-.idea
