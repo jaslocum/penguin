@@ -9,7 +9,7 @@
             <br>
             <p>Usage:</p>
             <br>
-            <p>penguin/{category_id}/{category_rec_id}</p>
+            <p>penguin/{category}/{category_rec_id}</p>
             <p></p>
         </div>
     </div>
