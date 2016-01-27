@@ -15,5 +15,5 @@
     <input type="text" name="category_rec_id" id="category_rec_id" class="form-control" value="" required>
 </div>
 <div class="form-group">
-    <button type="submit" class="btn btn-primary btn-lg">Add Image(s)&raquo;</button>
+    <button type="submit" class="btn btn-primary btn-lg">Add or Find Category &raquo;</button>
 </div>
