@@ -6,18 +6,21 @@
             <h1>Image Server</h1>
             <p>version 0.1</p>
             <br>
+            <h2>Usage:</h2>
             <br>
-            <p>Usage:</p>
-            <br>
-            <p>Web interface to maintain images in a category:<p>
+            <p>Web interface to maintain images for a {category} and {category_rec_id} key pair:<p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;penguin/{category}/{category_rec_id}</p>
             <br>
-            <p>Return first the image for a category:<p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;penguin/{category}/{category_rec_id}/image</p>
+            <p>Return first image for a {category} and {category_rec_id} key pair:<p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;penguin/{category}/{category_rec_id}/get</p>
             <p></p>
             <br>
-            <p>Web interface to create categories for images:<p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;penguin/categories/create </p>
+            <p>Return image for a {category}, {category_rec_id} and {filename} key set:<p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;penguin/{category}/{category_rec_id}/{filename}</p>
+            <p></p>
+            <br>
+            <p>Web interface to define categories for images:<p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;penguin/category_definitions</p>
             <p></p>
         </div>
     </div>

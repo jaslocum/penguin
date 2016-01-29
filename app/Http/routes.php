@@ -25,16 +25,25 @@
 
 Route::group(['middleware' => ['web']], function () {
 
-    Route::post('{category}/{category_rec_id}', 'CategoriesController@addImage');
+    Route::resource('category_definitions','CategoryDefinitionsController');
 
-    Route::get('{category}/{category_rec_id}', 'CategoriesController@show');
+    Route::post('{category}/{category_rec_id}', 'CategoriesController@post');
 
-    Route::get('{category}/{category_rec_id}/image', 'CategoriesController@image');
+    Route::get('{category}/{category_rec_id}', 'CategoriesController@get');
+
+    Route::get('{category}/{category_rec_id}/index', 'CategoriesController@index');
+
+    Route::get('{category}/{category_rec_id}/update', 'CategoriesController@update');
+
+    Route::delete('{category}/{category_rec_id}/destroy', 'CategoriesController@destroy');
+
+    Route::get('{category}/{category_rec_id}/{filename}', 'CategoriesController@get');
+
+    Route::delete('{category}/{category_rec_id}/{filename}/destroy', 'CategoriesController@destroy');
 
     Route::get('/', function () {
         return view('pages.home');
     });
 
-    Route::resource('categories','CategoriesController');
 
 });

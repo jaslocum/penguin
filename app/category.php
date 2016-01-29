@@ -20,4 +20,9 @@ class Category extends Model
         return $this->hasMany('App\Image');
     }
 
+    public function category_definition()
+    {
+        return $this->hasOne('App\Category_definition');
+    }
+
 }
