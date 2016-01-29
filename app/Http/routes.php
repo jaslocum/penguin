@@ -25,16 +25,16 @@
 
 Route::group(['middleware' => ['web']], function () {
 
-    //Route::resource('images','ImagesController');
-
-    Route::resource('categories','CategoriesController');
-
-    Route::post('{category}/{category_rec_id}', 'CategoriesController@images');
+    Route::post('{category}/{category_rec_id}', 'CategoriesController@addImage');
 
     Route::get('{category}/{category_rec_id}', 'CategoriesController@show');
+
+    Route::get('{category}/{category_rec_id}/image', 'CategoriesController@image');
 
     Route::get('/', function () {
         return view('pages.home');
     });
+
+    Route::resource('categories','CategoriesController');
 
 });
