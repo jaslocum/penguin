@@ -108,7 +108,6 @@ class CategoriesController extends Controller
     {
         //get file info from request
         $file = $request->file('file');
-        $this->path = 'images/';
         $filename = $file->getClientOriginalName();
         $mime = $file->getMimeType();
         $description = "";
@@ -133,7 +132,7 @@ class CategoriesController extends Controller
 
             //replace existing image
             $md5 = md5($image_rec->id);
-            $file->move($this->path . md5path($md5), md5filename($md5));
+            $file->move($this->path . $this->md5path($md5), $this->md5filename($md5));
 
         } else {
 
@@ -143,7 +142,7 @@ class CategoriesController extends Controller
                 $md5 = md5($image_rec->id);
                 $image_rec = $this->updateImage($image_rec, $category_id, $filename, $mime, $md5, $description, $deleted);
                 if (isset($image_rec)) {
-                    $file->move($this->path . md5path($md5), md5filename($md5));
+                    $file->move($this->path . $this->md5path($md5), $this->md5filename($md5));
                 } else {
                     return Response::create("<h1>$category, $category_rec_id: image detail could not be updated</h1>", 404);
                 }
@@ -197,8 +196,8 @@ class CategoriesController extends Controller
 
                 // get locate stored from md5 hash save in image table
                 $md5 = $image_rec->md5;
-                $md5path = $this->path.md5path($md5);
-                $md5filename = md5filename($md5);
+                $md5path = $this->path.$this->md5path($md5);
+                $md5filename = $this->md5filename($md5);
 
                 // find and return the image, if possible
                 if (file_exists($md5path . $md5filename)) {
@@ -270,8 +269,8 @@ class CategoriesController extends Controller
 
                 // get locate stored from md5 hash save in image table
                 $md5 = $image_rec->md5;
-                $md5path = $this->path.md5path($md5);
-                $md5filename = md5filename($md5);
+                $md5path = $this->path.$this->md5path($md5);
+                $md5filename = $this->md5filename($md5);
 
                 // find and return the image, if possible
                 if (file_exists($md5path . $md5filename)) {

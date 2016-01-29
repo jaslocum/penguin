@@ -20,7 +20,7 @@
                     this.on("complete",
                         function(){
                             if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
-                            alert("finished uploading...");
+                            //alert("finished uploading...");
                         }
                         }
                     );
