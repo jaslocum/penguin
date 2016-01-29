@@ -27,6 +27,7 @@ class CategoriesController extends Controller
 
         // find category and category_rec_id key pair
         $category_rec = Category::where(compact('category', 'category_rec_id'))->first();
+
         if (isset($category_rec)) {
 
                 // test if image exists for category_id and filename in image table
@@ -34,13 +35,16 @@ class CategoriesController extends Controller
 
                 // find the first image record stored for the category and category_rec_id key pair,
                 // if possible
-                $image_rec = Image::where(compact('category_id'))->all();
+                $image_rec = Image::where(compact('category_id'))->get();
 
                 // find and return the image, if possible
                 if (isset($image_rec)) {
 
+                    // collect images to return in response
+                    $images = $image_rec->toJson();
+
                     // return all info in image table for category and category_rec_id key pair,
-                    return Response::create(compact('image_rec'),200);
+                    return Response::create($images,200);
 
                 }
 
@@ -215,6 +219,17 @@ class CategoriesController extends Controller
                         )
                     );
 
+                } else {
+
+                    if ($deleted){
+
+                        return Response::create("<h1>$category, $category_rec_id, $filename: image was deleted</h1>", 404);
+
+                    } else {
+
+                        return Response::create("<h1>$category, $category_rec_id, $filename: image not found</h1>", 404);
+
+                    }
                 }
 
             } else {
@@ -282,7 +297,7 @@ class CategoriesController extends Controller
                     $image_rec->save();
 
                     // return file
-                    return Response::create(null,
+                    return Response::create("<h1>$category, $category_rec_id, $filename: image was deleted</h1>",
                         200,
                         array('content-type' => $mime,
                             'description' => $filename.' was deleted',

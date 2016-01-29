@@ -36,10 +36,12 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('{category}/{category_rec_id}/update', 'CategoriesController@update');
 
     Route::delete('{category}/{category_rec_id}/destroy', 'CategoriesController@destroy');
+    Route::get('{category}/{category_rec_id}/destroy', 'CategoriesController@destroy');
 
     Route::get('{category}/{category_rec_id}/{filename}', 'CategoriesController@get');
 
     Route::delete('{category}/{category_rec_id}/{filename}/destroy', 'CategoriesController@destroy');
+    Route::get('{category}/{category_rec_id}/{filename}/destroy', 'CategoriesController@destroy');
 
     Route::get('/', function () {
         return view('pages.home');
