@@ -216,6 +216,10 @@ class CategoriesController extends Controller
                         )
                     );
 
+                } else {
+
+                    return Response::create("<h1>$category, $category_rec_id: image not found</h1>", 404);
+
                 }
 
             } else {
