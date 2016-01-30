@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateImagesTable extends Migration
+class CategoryDefinitions extends Migration
 {
     /**
      * Run the migrations.
@@ -12,15 +12,12 @@ class CreateImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('images', function (Blueprint $table) {
+        Schema::create('category_definitions', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('category_id')->unsigned();
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->string('category');
             $table->string('description');
-            $table->string('filename');
             $table->string('mime');
-            $table->string('md5',32);
-            $table->boolean('deleted');
+            $table->integer('max_size_MB');
             $table->timestamps();
         });
     }
@@ -32,6 +29,6 @@ class CreateImagesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('images');
+        Schema::drop('category_definitions');
     }
 }

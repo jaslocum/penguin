@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class ImagesController extends Controller
+class CategoryDefinitionsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,6 +17,7 @@ class ImagesController extends Controller
     public function index()
     {
         //
+        return view('category_definitions.index');
     }
 
     /**
@@ -26,7 +27,6 @@ class ImagesController extends Controller
      */
     public function create()
     {
-
         //
     }
 
@@ -38,8 +38,7 @@ class ImagesController extends Controller
      */
     public function store(Request $request)
     {
-        //validate form
-        //return view('images.create');
+        //
     }
 
     /**
