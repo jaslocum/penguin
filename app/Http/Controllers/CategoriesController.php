@@ -34,13 +34,14 @@ class CategoriesController extends Controller
 
                 // find the first image record stored for the category and category_rec_id key pair,
                 // if possible
-                $image_rec = Image::where(compact('category_id'))->all();
+                $image_rec = Image::where(compact('category_id'))->get()->toJson();
 
                 // find and return the image, if possible
                 if (isset($image_rec)) {
 
                     // return all info in image table for category and category_rec_id key pair,
-                    return Response::create(compact('image_rec'),200);
+                    // $image_rec = json_encode($image_rec, JSON_PRETTY_PRINT);
+                    return Response::create($image_rec,200);
 
                 }
 
