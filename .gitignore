@@ -1,7 +1,7 @@
 /vendor
 /node_modules
 /.idea
-/poublic/image
+/public/image
 Homestead.yaml
 Homestead.json
 .env
