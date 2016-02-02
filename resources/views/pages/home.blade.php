@@ -3,10 +3,10 @@
 @section('content')
     <div class="jumbotron">
         <div class="container">
-            <h1>Image Server</h1>
+            <h2>Image Server</h2>
             <p>version 0.1</p>
-            <br>
-            <h2>Usage:</h2>
+            <img src="http://penguin.dev/penguin/penguinWithAttitude" alt="penguin with attitude" height="80" width="56">
+            <h3>Usage:</h3>
             <br>
             <p>Web interface to maintain images for a {category} and {category_rec_id} key pair:<p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;penguin/{category}/{category_rec_id}/update</p>
