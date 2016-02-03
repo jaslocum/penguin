@@ -40,7 +40,7 @@ class CategoryDefinitionsController extends Controller
     public function store(Request $request)
     {
         //
-
+        return;
     }
 
     /**
@@ -52,6 +52,7 @@ class CategoryDefinitionsController extends Controller
     public function show($id)
     {
         //
+        return;
     }
 
     /**
