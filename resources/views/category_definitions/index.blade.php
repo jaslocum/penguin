@@ -30,7 +30,7 @@
         </table>
     </div>
     <div class="form-group">
-        <form action="/category_definitions/" method="get">
+        <form action="/category_definitions/create" method="get">
             <button type="submit" class="btn btn-primary btn-lg">Add new category definition&raquo;</button>
         </form>
     </div>
