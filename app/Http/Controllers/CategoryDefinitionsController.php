@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Category_definition;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 
 class CategoryDefinitionsController extends Controller
 {
@@ -25,9 +27,12 @@ class CategoryDefinitionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         //
+        $category_definition = Category_definition::create();
+        return View::make('category_definitions.form',compact('category_definition'));
+
     }
 
     /**
@@ -39,6 +44,7 @@ class CategoryDefinitionsController extends Controller
     public function store(Request $request)
     {
         //
+
     }
 
     /**
@@ -61,6 +67,9 @@ class CategoryDefinitionsController extends Controller
     public function edit($id)
     {
         //
+        $category_definition = Category_definition::firstOrCreate($id);
+        return View::make('category_definitions.form',compact('category_definition'));
+
     }
 
     /**

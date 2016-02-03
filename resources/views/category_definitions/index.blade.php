@@ -18,7 +18,7 @@
             <tbody>
                 @foreach($category_definitions::all() as $category_definition)
                     <tr>
-                        <td><a href="/category_definitions/{{$category_definition['category']}}/edit">
+                        <td><a href="/category_definitions/{{$category_definition['id']}}/edit">
                                 {{$category_definition['category']}}
                             </a></td>
                         <td>{{$category_definition['description']}}</td>
@@ -30,7 +30,7 @@
         </table>
     </div>
     <div class="form-group">
-        <form action="/category_definitions/create" method="get">
+        <form action="/category_definitions/" method="get">
             <button type="submit" class="btn btn-primary btn-lg">Add new category definition&raquo;</button>
         </form>
     </div>
