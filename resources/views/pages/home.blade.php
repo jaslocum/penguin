@@ -5,7 +5,7 @@
         <div class="container">
             <h2>Image Server</h2>
             <p>version 0.1</p>
-            <img src="http://penguin.dev/penguin/penguinWithAttitude" alt="penguin with attitude" height="80" width="56">
+            <img src="http://penguin.dev/penguin/penguin/penguinWithAttitude.jpg" alt="penguin with attitude" height="80" width="56">
             <h3>Usage:</h3>
             <br>
             <p>Web interface to maintain images for a {category} and {category_rec_id} key pair:<p>
