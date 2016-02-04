@@ -4,32 +4,93 @@
 
 {{ csrf_field() }}
 
-<form enctype="multipart/form-data" class="col-md-6">
+    {!! Form::model(
+                        $category_definition,
+                        [
+                            'route' => ['category_definitions.update', $category_definition['id']],
+                            'enctype' => 'multipart/form-data',
+                            'class' => 'col-md-6',
+                            'method' => 'PUT'
+                        ]
+                    )
+    !!}
 
-    <div class="form-group">
-        <label>category:</label>
-        <input type="text" name="category" id="category" class="form-control" value="" required>
-    </div>
-    <div class="form-group">
-        <label>description:</label>
-        <input type="text" name="description" id="description" class="form-control" value="" required>
-    </div>
-    <div class="form-group">
-        <label>mime:</label>
-        <input type="text" name="mime" id="mime" class="form-control" value="" required>
-    </div>
-    <div class="form-group">
-        <label>max size in MB:</label>
-        <input type="text" name="max_size_MB" id="max_size_MB" class="form-control" value="" required>
-    </div>
-    <div class="form-group">
-        <button method = "put" type="submit" bs-action="/category_definitions/{$category_definition['id']}" class="btn btn-primary btn-lg">Add or Commit Category Definition &raquo;</button>
-    </div>
-    <div class="form-group">
-        <button method="delete" type="submit" bs-action="/category_definitions/{$category_definition['id']}" class="btn btn-danger btn-lg">Delete Category Definition &raquo;</button>
-    </div>
+        <div class="form-group">
+            {!! Form::label ('category', 'category:') !!}
+            {!! Form::text  (
+                                'category',
+                                $category_definition['category'],
+                                [
+                                    'class'=>'form-control',
+                                    'required'=>'required',
 
-</form>
+                                ]
+                            )
+            !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label ('description', 'description:') !!}
+            {!! Form::text  (
+                                'description',
+                                $category_definition['description'],
+                                [
+                                    'class'=>'form-control'
+                                ]
+                            )
+            !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label ('mime', 'mime:') !!}
+            {!! Form::text  (
+                                'mime',
+                                $category_definition['mime'],
+                                [
+                                    'class'=>'form-control'
+                                ]
+                            )
+            !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label ('max_size_MB', 'max size in MB:') !!}
+            {!! Form::text  (
+                                'max_size_MB',
+                                $category_definition['max_size_MB'],
+                                [
+                                    'class'=>'form-control'
+                                ]
+                            )
+            !!}
+        </div>
+        <div class="form-group">
+            {!! Form::submit   (
+                                    'Submit',
+                                    [
+                                        'class' => 'btn btn-primary btn-lg col-md-6',
+                                        'onClick' => "set_method('PUT')"
+                                    ]
+                                )
+            !!}
+            {!! Form::submit    (
+                                    'Delete',
+                                    [
+                                        'class' => 'btn btn-danger btn-lg col-md-6',
+                                        'onClick' => "set_method('DELETE')"
+                                    ]
+                                )
+            !!}
+        </div>
+    {!! Form::close() !!}
+
+@endsection
+
+@section('scripts.footer')
+
+    <script type="text/javascript">
+        function set_method(method)
+        {
+            document.getElementsByName('_method')[0].value = method;
+        }
+    </script>
 
 @endsection
 
