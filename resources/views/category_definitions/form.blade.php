@@ -9,7 +9,7 @@
                         [
                             'route' => ['category_definitions.update', $category_definition['id']],
                             'enctype' => 'multipart/form-data',
-                            'class' => 'col-md-6',
+                            'class' => 'col-md-4',
                             'method' => 'PUT'
                         ]
                     )
@@ -65,8 +65,16 @@
             {!! Form::submit   (
                                     'Submit',
                                     [
-                                        'class' => 'btn btn-primary btn-lg col-md-6',
+                                        'class' => 'btn btn-success btn-lg col-md-6',
                                         'onClick' => "set_method('PUT')"
+                                    ]
+                                )
+            !!}
+            {!! Form::submit    (
+                                    'Cancel',
+                                    [
+                                        'class' => 'btn btn-info btn-lg col-md-6',
+                                        'onClick' => "window.location = 'category_definitions/'"
                                     ]
                                 )
             !!}

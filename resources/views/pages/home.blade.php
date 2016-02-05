@@ -18,7 +18,11 @@
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;penguin/{category}/{category_rec_id}/{filename}</p>
             <br>
             <p>Web interface to define categories for images:<p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;penguin/category_definitions</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="category_definitions/">
+                    penguin/category_definitions
+                </a>
+            </p>
             <p></p>
         </div>
     </div>
