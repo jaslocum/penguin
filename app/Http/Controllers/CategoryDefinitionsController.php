@@ -14,7 +14,6 @@ class CategoryDefinitionsController extends Controller
      */
     public function index()
     {
-        //
         return view('category_definitions.index');
     }
 
@@ -25,7 +24,6 @@ class CategoryDefinitionsController extends Controller
      */
     public function create()
     {
-        //
         $category = "";
         $category_definition = Category_definition::firstOrCreate(compact('category'));
         return View('category_definitions.form',compact('category_definition'));
@@ -38,7 +36,6 @@ class CategoryDefinitionsController extends Controller
      */
     public function store()
     {
-        //
         redirect('category_definitions');
     }
 
@@ -49,7 +46,6 @@ class CategoryDefinitionsController extends Controller
      */
     public function show()
     {
-        //
         return redirect('category_definitions');
     }
 
@@ -61,7 +57,6 @@ class CategoryDefinitionsController extends Controller
      */
     public function edit($id)
     {
-        //
         $category_definition = Category_definition::firstOrCreate(compact('id'));
         return View('category_definitions.form',compact('category_definition'));
     }
@@ -85,7 +80,6 @@ class CategoryDefinitionsController extends Controller
      */
     public function destroy($id)
     {
-        //
         Category_definition::where(compact('id'))->first()->delete();
         return redirect('category_definitions');
     }
