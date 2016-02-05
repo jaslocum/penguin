@@ -2,15 +2,14 @@
 
 @section('content')
 
-{{ csrf_field() }}
-
     {!! Form::model(
                         $category_definition,
                         [
                             'route' => ['category_definitions.update', $category_definition['id']],
                             'enctype' => 'multipart/form-data',
-                            'class' => 'col-md-4',
-                            'method' => 'PUT'
+                            'class' => 'col-md-5',
+                            'method' => 'put',
+                            'id' => '_category_definition_form'
                         ]
                     )
     !!}
@@ -22,8 +21,7 @@
                                 $category_definition['category'],
                                 [
                                     'class'=>'form-control',
-                                    'required'=>'required',
-
+                                    'required'=>'required'
                                 ]
                             )
             !!}
@@ -65,28 +63,29 @@
             {!! Form::submit   (
                                     'Submit',
                                     [
-                                        'class' => 'btn btn-success btn-lg col-md-6',
-                                        'onClick' => "set_method('PUT')"
+                                        'id' => '_submit',
+                                        'class' => 'btn btn-success btn-lg col-md-5',
                                     ]
                                 )
             !!}
-            {!! Form::submit    (
+            {!! Form::button    (
                                     'Cancel',
                                     [
-                                        'class' => 'btn btn-info btn-lg col-md-6',
-                                        'onClick' => "window.location = 'category_definitions/'"
+                                        'id' => '_cancel',
+                                        'class' => 'btn btn-info btn-lg col-md-5',
                                     ]
                                 )
             !!}
-            {!! Form::submit    (
+            {!! Form::button    (
                                     'Delete',
                                     [
-                                        'class' => 'btn btn-danger btn-lg col-md-6',
-                                        'onClick' => "set_method('DELETE')"
+                                        'id' => '_delete',
+                                        'class' => 'btn btn-danger btn-lg col-md-5',
                                     ]
                                 )
             !!}
         </div>
+
     {!! Form::close() !!}
 
 @endsection
@@ -94,10 +93,25 @@
 @section('scripts.footer')
 
     <script type="text/javascript">
+
+        document.getElementById("_submit").addEventListener("click", function(event){
+            set_method('PUT');
+        });
+        document.getElementById("_cancel").addEventListener("click", function(event){
+            set_method('GET');
+            window.history.back();
+        });
+        document.getElementById("_delete").addEventListener("click", function(event){
+            if (confirm("Delete?")) {
+                set_method('DELETE');
+                document.getElementById("_category_definition_form").submit();
+            }
+        });
         function set_method(method)
         {
             document.getElementsByName('_method')[0].value = method;
         }
+
     </script>
 
 @endsection

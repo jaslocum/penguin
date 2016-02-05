@@ -26,7 +26,8 @@ class CategoryDefinitionsController extends Controller
     public function create(Request $request)
     {
         //
-        $category_definition = Category_definition::create();
+        $category = "";
+        $category_definition = Category_definition::firstOrCreate(compact('category'));
         return View('category_definitions.form',compact('category_definition'));
 
     }
@@ -52,8 +53,9 @@ class CategoryDefinitionsController extends Controller
     public function show($id)
     {
         //
-        $category_definition = Category_definition::firstOrCreate(compact('id'));
-        return View('category_definitions.form',compact('category_definition'));
+        //$category_definition = Category_definition::firstOrCreate(compact('id'));
+        //return View('category_definitions.form',compact('category_definition'));
+        return view('category_definitions.index');
     }
 
     /**
