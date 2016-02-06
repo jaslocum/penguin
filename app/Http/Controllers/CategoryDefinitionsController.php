@@ -16,7 +16,7 @@ class CategoryDefinitionsController extends Controller
     {
         //clear unused records before index view is created
         $category = "";
-        Category_definition::where(compact('category'))->where(compact('category'))->delete();
+        Category_definition::where(compact('category'))->delete();
         return view('category_definitions.index');
     }
 
