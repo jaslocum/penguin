@@ -14,6 +14,9 @@ class CategoryDefinitionsController extends Controller
      */
     public function index()
     {
+        //clear unused records before index view is created
+        $category = "";
+        Category_definition::where(compact('category'))->where(compact('category'))->delete();
         return view('category_definitions.index');
     }
 
@@ -68,7 +71,7 @@ class CategoryDefinitionsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Category_definition::where(compact('id'))->first()->update($request->all());
+        $category_definition = Category_definition::where(compact('id'))->first()->update($request->all());
         return redirect('category_definitions');
     }
 
