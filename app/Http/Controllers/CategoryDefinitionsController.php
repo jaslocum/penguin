@@ -14,9 +14,6 @@ class CategoryDefinitionsController extends Controller
      */
     public function index()
     {
-        //clear unused records before index view is created
-        $category = "";
-        Category_definition::where(compact('category'))->delete();
         return view('category_definitions.index');
     }
 
@@ -27,8 +24,7 @@ class CategoryDefinitionsController extends Controller
      */
     public function create()
     {
-        $category = "";
-        $category_definition = Category_definition::firstOrCreate(compact('category'));
+        $category_definition = Category_definition::Create();
         return View('category_definitions.form',compact('category_definition'));
     }
 
@@ -58,7 +54,7 @@ class CategoryDefinitionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public static function edit($id)
     {
         $category_definition = Category_definition::firstOrCreate(compact('id'));
         return View('category_definitions.form',compact('category_definition'));
