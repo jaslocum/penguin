@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Request;
 use App\Category_definition;
 
 class CategoryDefinitionsController extends Controller
@@ -18,24 +18,21 @@ class CategoryDefinitionsController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        $category_definition = Category_definition::Create();
-        return View('category_definitions.form',compact('category_definition'));
+        return view('category_definitions.create');
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store()
     {
-        redirect('category_definitions');
+        $request = Request::all();
+        Category_definition::create($request);
+        return redirect('category_definitions');
     }
 
     /**
@@ -56,8 +53,8 @@ class CategoryDefinitionsController extends Controller
      */
     public static function edit($id)
     {
-        $category_definition = Category_definition::firstOrCreate(compact('id'));
-        return View('category_definitions.form',compact('category_definition'));
+        $category_definition = Category_definition::findOrFail($id);
+        return view('category_definitions.form',compact('category_definition'));
     }
 
     /**
@@ -67,7 +64,9 @@ class CategoryDefinitionsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $category_definition = Category_definition::where(compact('id'))->first()->update($request->all());
+
+        $request = Request::all();
+        Category_definition::findOrFail($id)->update($request);
         return redirect('category_definitions');
     }
 
@@ -79,7 +78,7 @@ class CategoryDefinitionsController extends Controller
      */
     public function destroy($id)
     {
-        Category_definition::where(compact('id'))->first()->delete();
+        Category_definition::findOrFail($id)->delete();
         return redirect('category_definitions');
     }
 }
