@@ -62,7 +62,7 @@ class CategoryDefinitionsController extends Controller
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
 
         $request = Request::all();
