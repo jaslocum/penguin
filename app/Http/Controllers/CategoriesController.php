@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category_definition;
 use App\Image;
 use Illuminate\Http\Request;
 use App\Category;
@@ -22,8 +23,6 @@ class CategoriesController extends Controller
      */
     public function index($category, $category_rec_id)
     {
-        // hard coded web directory to store all files
-        // $path = "images/";
 
         // find category and category_rec_id key pair
         $category_rec = Category::where(compact('category', 'category_rec_id'))->first();
@@ -51,32 +50,6 @@ class CategoriesController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  CategoryRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(CategoryRequest $request)
-    {
-        $category = $request->request->get('category');
-        $category_rec_id = $request->request->get('category_rec_id');
-        $category_rec = Category::where(compact('category', 'category_rec_id'))->first();
-        if ($category_rec === null) {
-           $category_rec = $this->newCategory($category, $category_rec_id);
-        }
-        if (isset($category_rec))
-        {
-            return redirect()->action("CategoriesController@update",
-                [
-                    'category' => $category,
-                    'category_rec_id' => $category_rec_id,
-                ]);
-        } else {
-            return "<h1>$category, $category_rec_id: could not be created</h1>";
-        }
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  string $category
@@ -85,13 +58,17 @@ class CategoriesController extends Controller
      */
     public function update($category, $category_rec_id)
     {
-        $category_rec = Category::where(compact('category', 'category_rec_id'))->first();
+        $category_def = Category_definition::where(compact('category'))->first();
+        $category_id = $category_def->id;
+        $category_rec = Category::where(compact('category_id', 'category_rec_id'))->first();
         if(isset($category_rec)) {
-            return view('categories.update', compact('category_rec'));
+            $category_def = $category_rec->category_definition();
+            return view('categories.update', compact('category_rec'), compact('category_def'));
         } else {
             $category_rec = $this->newCategory($category, $category_rec_id);
+            $category_def = $category_rec->category_definition();
             if (isset($category_rec)){
-                return view('categories.update', compact('category_rec'));
+                return view('categories.update', compact('category_rec', compact('category_def')));
             } else {
                 return "<h1>$category, $category_rec_id: could not be created</h1>";
             }
@@ -107,6 +84,7 @@ class CategoriesController extends Controller
      */
     public function post(Request $request, $category, $category_rec_id)
     {
+
         //get file info from request
         $file = $request->file('file');
         $filename = $file->getClientOriginalName();
@@ -171,8 +149,6 @@ class CategoriesController extends Controller
      */
     public function get($category, $category_rec_id, $filename = null)
     {
-        // hard coded web directory to store all files
-        // $path = "images/";
 
         // find category and category_rec_id key pair
         $category_rec = Category::where(compact('category', 'category_rec_id'))->first();
@@ -199,6 +175,7 @@ class CategoriesController extends Controller
             if (isset($image_rec)) {
 
                 // load information stored in image table
+                $size = $image_rec->size;
                 $mime = $image_rec->mime;
                 $description = $image_rec->description;
                 $deleted = $image_rec->deleted;
@@ -219,6 +196,7 @@ class CategoriesController extends Controller
                         array('content-type' => $mime,
                             'description' => $description,
                             'filename' => $filename,
+                            'size' => $size,
                             'md5' => $md5,
                             'deleted' => $deleted
                         )
@@ -249,8 +227,6 @@ class CategoriesController extends Controller
      */
     public function destroy($category, $category_rec_id, $filename = null)
     {
-        // hard coded web directory to store all files
-        // $path = "images/";
 
         // find category and category_rec_id key pair
         $category_rec = Category::where(compact('category', 'category_rec_id'))->first();
@@ -322,7 +298,9 @@ class CategoriesController extends Controller
      * @param $category_rec_id
      * @return bool|mixed
      */
-    public function newCategory($category, $category_rec_id){
+    public function newCategory($category, $category_rec_id)
+    {
+
         //create categories record
         $category_rec = new Category;
         $category_rec->category = $category;
@@ -332,6 +310,7 @@ class CategoriesController extends Controller
         } else {
             return null;
         }
+
     }
 
     /**
@@ -339,12 +318,14 @@ class CategoriesController extends Controller
      */
     public function newImage()
     {
+
         $image_rec = new Image;
         if($image_rec->save()) {
             return $image_rec;
         } else {
             return null;
         }
+
     }
 
     /**
@@ -359,6 +340,7 @@ class CategoriesController extends Controller
      */
     public function updateImage($image_rec)
     {
+
         //update image record
         if($image_rec->save()) {
             return $image_rec;
@@ -372,18 +354,24 @@ class CategoriesController extends Controller
      * @param $md5
      * @return string
      */
-    public function md5path($md5){
+    public function md5path($md5)
+    {
+
         $md5path = substr($md5,0,3)."/".substr($md5,3,3)."/".substr($md5,6,3)."/";
         return $md5path;
+
     }
 
     /**
      * @param $md5
      * @return string
      */
-    public function md5filename($md5){
+    public function md5filename($md5)
+    {
+
         $md5filename = substr($md5,9,23);
         return $md5filename;
+
     }
 
 }

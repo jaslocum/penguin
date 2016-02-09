@@ -28,17 +28,12 @@
                 maxFilesize: 24,
                 acceptedFiles: '.jpg, .jpeg, .png, .pdf',
                 addRemoveLinks: true,
-                maxFiles: 100
             };
             var mockFile = {name:"KIMG0109.jpg", size:12345};
             imageForm.emit("addedfile",mockFile);
             imageForm.createThumbnailFromUrl("KIMG0109.jpg","http://penguin.dev/woimg/xyz/KIMG0109.jpg");
             // Make sure that there is no progress bar, etc...
             myDropzone.emit("complete", mockFile);
-            // If you use the maxFiles option, make sure you adjust it to the
-            // correct amount:
-            var existingFileCount = 1; // The number of files already uploaded
-            myDropzone.options.maxFiles = myDropzone.options.maxFiles - existingFileCount;
 
     </script>
 

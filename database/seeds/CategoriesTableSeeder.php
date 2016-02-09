@@ -16,7 +16,7 @@ class CategoriesTableSeeder extends Seeder
         Model::unguard();
 
         DB::table('categories')->insert([
-            'category' => 'penguin',
+            'category_id' => '1',
             'category_rec_id' => 'penguin',
             'id' => 1,
         ]);
