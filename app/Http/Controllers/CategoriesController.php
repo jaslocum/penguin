@@ -110,6 +110,7 @@ class CategoriesController extends Controller
         //get file info from request
         $file = $request->file('file');
         $filename = $file->getClientOriginalName();
+        $size = $file->getSize();
         $mime = $file->getMimeType();
         $description = "";
         $deleted = false;
@@ -141,7 +142,14 @@ class CategoriesController extends Controller
             $image_rec = $this->newImage($category_id, $filename, $mime);
             if (isset($image_rec)) {
                 $md5 = md5($image_rec->id);
-                $image_rec = $this->updateImage($image_rec, $category_id, $filename, $mime, $md5, $description, $deleted);
+                $image_rec->category_id = $category_id;
+                $image_rec->filename = $filename;
+                $image_rec->size = $size;
+                $image_rec->mime = $mime;
+                $image_rec->md5 = $md5;
+                $image_rec->description = $description;
+                $image_rec->deleted = $deleted;
+                $image_rec = $this->updateImage($image_rec);
                 if (isset($image_rec)) {
                     $file->move($this->path . $this->md5path($md5), $this->md5filename($md5));
                 } else {
@@ -349,15 +357,8 @@ class CategoriesController extends Controller
      * @param boolean $deleted
      * @return null
      */
-    public function updateImage($image_rec, $category_id, $filename, $mime, $md5, $description, $deleted)
+    public function updateImage($image_rec)
     {
-        $image_rec->category_id = $category_id;
-        $image_rec->filename = $filename;
-        $image_rec->mime = $mime;
-        $image_rec->md5 = $md5;
-        $image_rec->description = $description;
-        $image_rec->deleted = $deleted;
-
         //update image record
         if($image_rec->save()) {
             return $image_rec;

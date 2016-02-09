@@ -18,6 +18,7 @@ class CreateImagesTable extends Migration
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->string('description');
             $table->string('filename');
+            $table->integer('size')->unsigned();
             $table->string('mime');
             $table->string('md5',32);
             $table->boolean('deleted');

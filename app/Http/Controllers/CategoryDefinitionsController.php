@@ -54,7 +54,7 @@ class CategoryDefinitionsController extends Controller
     public static function edit($id)
     {
         $category_definition = Category_definition::findOrFail($id);
-        return view('category_definitions.form',compact('category_definition'));
+        return view('category_definitions.update',compact('category_definition'));
     }
 
     /**
