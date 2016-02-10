@@ -25,21 +25,21 @@
 
 Route::group(['middleware' => ['web']], function () {
 
-    Route::resource('category_definitions', 'CategoryDefinitionsController');
+    Route::resource('category', 'CategoryController');
 
-    Route::post('{category}/{category_rec_id}', 'CategoriesController@post');
+    Route::post('{category}/{key}', 'BucketController@post');
 
-    Route::get('{category}/{category_rec_id}', 'CategoriesController@get');
+    Route::get('{category}/{key}', 'BucketController@get');
 
-    Route::get('{category}/{category_rec_id}/index', 'CategoriesController@index');
+    Route::get('{category}/{key}/index', 'BucketController@index');
 
-    Route::get('{category}/{category_rec_id}/update', 'CategoriesController@update');
+    Route::get('{category}/{key}/update', 'BucketController@update');
 
-    Route::get('{category}/{category_rec_id}/destroy', 'CategoriesController@destroy');
+    Route::get('{category}/{key}/destroy', 'BucketController@destroy');
 
-    Route::get('{category}/{category_rec_id}/{filename}', 'CategoriesController@get');
+    Route::get('{category}/{key}/{filename}', 'BucketController@get');
 
-    Route::get('{category}/{category_rec_id}/{filename}/destroy', 'CategoriesController@destroy');
+    Route::get('{category}/{key}/{filename}/destroy', 'BucketController@destroy');
 
     Route::get('/', function () {
         return view('pages.home');

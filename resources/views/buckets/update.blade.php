@@ -1,10 +1,10 @@
 @extends('layout')
 
 @section('content')
-    <h1>{{$category_rec->category}} - {{$category_rec->category_rec_id}}</h1>
-    <hr>
+    <h1>{{$category}} - {{$key}}</h1>
+    <hr>key
     <div class="row">
-        <form id="imageForm" method="post" action="/{{$category_rec->category}}/{{$category_rec->category_rec_id}}" class="dropzone">
+        <form id="imageForm" method="post" action="/{{$category}}/{{$key}}" class="dropzone">
             {{csrf_field()}}
             @include('errors.show')
         </form>
@@ -28,8 +28,13 @@
                 maxFilesize: 24,
                 acceptedFiles: '.jpg, .jpeg, .png, .pdf',
                 addRemoveLinks: true,
-                maxFiles: 100
             };
+            var mockFile = {name:"KIMG0109.jpg", size:12345};
+            imageForm.emit("addedfile",mockFile);
+            imageForm.createThumbnailFromUrl("KIMG0109.jpg","http://penguin.dev/woimg/xyz/KIMG0109.jpg");
+            // Make sure that there is no progress bar, etc...
+            myDropzone.emit("complete", mockFile);
+
     </script>
 
 @endsection

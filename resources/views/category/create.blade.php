@@ -2,13 +2,12 @@
 
 @section('content')
 
-    {!! Form::model(
-                        $category_definition,
+    {!! Form::open(
                         [
-                            'route' => ['category_definitions.update', $category_definition['id']],
+                            'route' => ['category.store'],
                             'enctype' => 'multipart/form-data',
                             'class' => 'col-xs-6',
-                            'method' => 'put',
+                            'method' => 'POST',
                             'id' => '_category_definition_form'
                         ]
                     )
@@ -18,7 +17,7 @@
             {!! Form::label ('category', 'category:') !!}
             {!! Form::text  (
                                 'category',
-                                $category_definition['category'],
+                                '',
                                 [
                                     'class'=>'form-control',
                                     'required'=>'required'
@@ -30,7 +29,7 @@
             {!! Form::label ('description', 'description:') !!}
             {!! Form::text  (
                                 'description',
-                                $category_definition['description'],
+                                '',
                                 [
                                     'class'=>'form-control'
                                 ]
@@ -41,7 +40,7 @@
             {!! Form::label ('mime', 'mime:') !!}
             {!! Form::text  (
                                 'mime',
-                                $category_definition['mime'],
+                                '',
                                 [
                                     'class'=>'form-control'
                                 ]
@@ -52,7 +51,7 @@
             {!! Form::label ('max_size_MB', 'max size in MB:') !!}
             {!! Form::text  (
                                 'max_size_MB',
-                                $category_definition['max_size_MB'],
+                                '',
                                 [
                                     'class'=>'form-control'
                                 ]
@@ -76,14 +75,6 @@
                                     ]
                                 )
             !!}
-            {!! Form::button    (
-                                    'Delete',
-                                    [
-                                        'id' => '_delete',
-                                        'class' => 'btn btn-danger btn-lg col-s-4',
-                                    ]
-                                )
-            !!}
         </div>
 
     {!! Form::close() !!}
@@ -95,17 +86,11 @@
     <script type="text/javascript">
 
         document.getElementById("_submit").addEventListener("click", function(event){
-            set_method('PUT');
+            set_method('POST');
         });
         document.getElementById("_cancel").addEventListener("click", function(event){
             set_method('GET');
             window.history.back();
-        });
-        document.getElementById("_delete").addEventListener("click", function(event){
-            if (confirm("Delete?")) {
-                set_method('DELETE');
-                document.getElementById("_category_definition_form").submit();
-            }
         });
         function set_method(method)
         {

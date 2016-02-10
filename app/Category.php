@@ -6,23 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-
     /**
-     * A Category can have many images.
+     * A Category_definition can have many buckets.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
 
-    protected $fillable = array('category','category_rec_id');
+    protected $fillable = array('category','description','mime','max_size_MB');
 
-    public function images()
-    {
-        return $this->hasMany('App\Image');
-    }
+    protected $table = "category";
 
-    public function category_definition()
+    public function buckets()
     {
-        return $this->hasOne('App\Category_definition');
+        return $this->hasMany('App\Buckets');
     }
 
 }

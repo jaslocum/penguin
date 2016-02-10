@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Request;
-use App\Category_definition;
+use App\Category;
 
-class CategoryDefinitionsController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class CategoryDefinitionsController extends Controller
      */
     public function index()
     {
-        return view('category_definitions.index');
+        return view('category.index');
     }
 
     /**
@@ -22,7 +22,7 @@ class CategoryDefinitionsController extends Controller
      */
     public function create()
     {
-        return view('category_definitions.create');
+        return view('category.create');
     }
 
     /**
@@ -31,8 +31,8 @@ class CategoryDefinitionsController extends Controller
     public function store()
     {
         $request = Request::all();
-        Category_definition::create($request);
-        return redirect('category_definitions');
+        Category::create($request);
+        return redirect('category');
     }
 
     /**
@@ -42,7 +42,7 @@ class CategoryDefinitionsController extends Controller
      */
     public function show()
     {
-        return redirect('category_definitions');
+        return redirect('category');
     }
 
     /**
@@ -53,8 +53,8 @@ class CategoryDefinitionsController extends Controller
      */
     public static function edit($id)
     {
-        $category_definition = Category_definition::findOrFail($id);
-        return view('category_definitions.form',compact('category_definition'));
+        $category = Category::findOrFail($id);
+        return view('category.update',compact('category'));
     }
 
     /**
@@ -66,8 +66,8 @@ class CategoryDefinitionsController extends Controller
     {
 
         $request = Request::all();
-        Category_definition::findOrFail($id)->update($request);
-        return redirect('category_definitions');
+        Category::findOrFail($id)->update($request);
+        return redirect('category');
     }
 
     /**
@@ -78,7 +78,7 @@ class CategoryDefinitionsController extends Controller
      */
     public function destroy($id)
     {
-        Category_definition::findOrFail($id)->delete();
-        return redirect('category_definitions');
+        Category::findOrFail($id)->delete();
+        return redirect('category');
     }
 }

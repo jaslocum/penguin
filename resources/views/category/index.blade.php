@@ -1,4 +1,4 @@
-@inject('category_definitions','App\Http\Utilities\Category_definitions')
+@inject('categories','App\Http\Utilities\Categories')
 
 @extends('layout')
 
@@ -16,23 +16,23 @@
             </tr>
             </thead>
             <tbody>
-                @foreach($category_definitions::all() as $category_definition)
+                @foreach($categories::all() as $category)
                     <tr>
                         <td>
-                            <a href="/category_definitions/{{$category_definition['id']}}/edit">
-                                {{$category_definition['category']}}
+                            <a href="/category/{{$category['id']}}/edit">
+                                {{$category['category']}}
                             </a>
                         </td>
-                        <td>{{$category_definition['description']}}</td>
-                        <td>{{$category_definition['mime']}}</td>
-                        <td>{{$category_definition['max_size_MB']}}MB</td>
+                        <td>{{$category['description']}}</td>
+                        <td>{{$category['mime']}}</td>
+                        <td>{{$category['max_size_MB']}}MB</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
     <div class="form-group">
-        <form action="/category_definitions/create" method="get">
+        <form action="/category/create" method="get">
             <button type="submit" class="btn btn-primary btn-lg">Add Category &raquo;</button>
         </form>
     </div>

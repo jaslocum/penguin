@@ -14,10 +14,11 @@ class CreateImagesTable extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('category_id')->unsigned();
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->integer('bucket_id')->unsigned();
+            $table->foreign('bucket_id')->references('id')->on('buckets')->onDelete('cascade');
             $table->string('description');
             $table->string('filename');
+            $table->integer('size')->unsigned();
             $table->string('mime');
             $table->string('md5',32);
             $table->boolean('deleted');
