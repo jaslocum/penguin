@@ -178,7 +178,7 @@ class BucketController extends Controller
                 // find the first image record stored for the category and key key pair,
                 // if possible
                 $deleted = false;
-                $image_rec = Image::where(compact('bucket_id','deleted'))->first();
+                $image_rec = Image::orderby('id')->where(compact('bucket_id','deleted'))->first();
 
             }
 
