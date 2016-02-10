@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Category_definition extends Model
+class Category extends Model
 {
     /**
      * A Category_definition can have many buckets.
@@ -14,9 +14,11 @@ class Category_definition extends Model
 
     protected $fillable = array('category','description','mime','max_size_MB');
 
-    public function categories()
+    protected $table = "category";
+
+    public function buckets()
     {
-        return $this->hasMany('App\Category');
+        return $this->hasMany('App\Buckets');
     }
 
 }

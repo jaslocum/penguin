@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Bucket extends Model
+class Buckets extends Model
 {
 
     /**
@@ -17,10 +17,10 @@ class Bucket extends Model
 
     public function images()
     {
-        return $this->hasMany('App\Image');
+        return $this->hasMany('App\Images');
     }
 
-    public function category_definition()
+    public function category()
     {
         return $this->hasOne('App\Category_definition');
     }

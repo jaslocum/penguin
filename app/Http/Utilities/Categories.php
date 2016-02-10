@@ -12,7 +12,7 @@ class Categories
      */
     public static function all()
     {
-        $categories = Category::orderBy('category')->get();
+        $categories = Category::orderBy('category')->where('id','>','1')->get();
         return $categories;
     }
 

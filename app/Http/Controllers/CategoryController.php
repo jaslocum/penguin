@@ -31,7 +31,7 @@ class CategoryController extends Controller
     public function store()
     {
         $request = Request::all();
-        Category_definition::create($request);
+        Category::create($request);
         return redirect('category');
     }
 

@@ -1,10 +1,10 @@
 @extends('layout')
 
 @section('content')
-    <h1>{{$bucket->category}} - {{$bucket->key}}</h1>
+    <h1>{{$category}} - {{$key}}</h1>
     <hr>key
     <div class="row">
-        <form id="imageForm" method="post" action="/{{$bucket->category}}/{{$bucket->key}}" class="dropzone">
+        <form id="imageForm" method="post" action="/{{$category}}/{{$key}}" class="dropzone">
             {{csrf_field()}}
             @include('errors.show')
         </form>

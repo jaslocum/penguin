@@ -5,10 +5,10 @@
     {!! Form::model(
                         $category,
                         [
-                            'route' => ['category', $category['id']],
+                            'route' => ['category.update',$category->id],
                             'enctype' => 'multipart/form-data',
                             'class' => 'col-xs-6',
-                            'method' => 'put',
+                            'method' => 'PUT',
                             'id' => '_category_form'
                         ]
                     )

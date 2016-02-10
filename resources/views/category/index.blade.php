@@ -1,4 +1,4 @@
-@inject('categorys','App\Http\Utilities\Categories')
+@inject('categories','App\Http\Utilities\Categories')
 
 @extends('layout')
 
