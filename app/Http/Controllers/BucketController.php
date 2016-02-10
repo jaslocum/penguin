@@ -2,18 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Buckets;
+use App\Bucket;
 use App\Category;
-use App\Images;
+use App\Image;
+use App\helpers;
 use Illuminate\Http\Request;
-use App\Http\Requests\CategoryRequest;
-use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 class BucketController extends Controller
 {
-
-    private $path = "images/";
 
     /**
      * @param $category
@@ -33,7 +30,7 @@ class BucketController extends Controller
 
                 // find the first image record stored for the category and key key pair,
                 // if possible
-                $image_rec = Images::where(compact('bucket_id'))->get()->toJson();
+                $image_rec = Image::where(compact('bucket_id'))->get()->toJson();
 
                 // find and return the image, if possible
                 if (isset($image_rec)) {
@@ -59,17 +56,26 @@ class BucketController extends Controller
     public function update($category, $key)
     {
         // find category and key key pair
-        $bucket = $this->getBucket($category, $key);
+        $bucket_rec = $this->getBucket($category, $key);
+        $bucket_id = $bucket_rec->id;
+        $category_id = $bucket_rec->category_id;
+        $category_rec = Category::where(['id'=>$category_id])->first();
 
-        if(isset($bucket)) {
-            return view('buckets.update', compact('category','key'));
+        if(isset($bucket_rec)) {
+
+            return view('bucket.update', compact('category','key','bucket_id', 'category_rec'));
+
         } else {
-            $bucket = $this->newBucket($category, $key);
-            if (isset($bucket)){
-                return view('buckets.update', compact('category', compact('key')));
+
+            $bucket_rec = $this->newBucket($category, $key);
+            $bucket_id = $bucket_rec->id;
+
+            if (isset($bucket_rec)){
+                return view('bucket.update', compact('category','key','bucket_id', 'category_rec'));
             } else {
-                return "<h1>$category, $key: could not be created</h1>";
+                return "<h1>$category, $key: bucket could not be created</h1>";
             }
+
         }
 
    }
@@ -89,15 +95,14 @@ class BucketController extends Controller
         $size = $file->getSize();
         $mime = $file->getMimeType();
         $description = "";
-        $deleted = false;
 
         //find existing category and key key pair if possible
-        $bucket = $this->getBucket($category,$key);
+        $bucket = $this->getBucket($category, $key);
 
         if ($bucket === null) {
             $bucket = $this->newBucket($category, $key);
             if ($bucket === null) {
-                return Response::create("<h1>$category, $key: key pair can not be found or created</h1>", 404);
+                return Response::create("<h1>$category, $key: bucket could not be found or created</h1>", 404);
             }
         }
 
@@ -105,18 +110,21 @@ class BucketController extends Controller
         $bucket_id = $bucket->id;
 
         // find existing image stored under filename for bucket_id, if possible
-        $image_rec = Images::where(compact('bucket_id', 'filename'))->first();
+        $image_rec = Image::where(compact('bucket_id', 'filename'))->first();
 
         if (isset($image_rec)) {
 
             //replace existing image
-            $md5 = md5($image_rec->id);
-            $file->move($this->path . $this->md5path($md5), $this->md5filename($md5));
+            $md5 = $image_rec->md5;
+            $file->move(md5path($md5), md5filename($md5));
+
+            $image_rec->deleted = false;
+            $this->updateImage($image_rec);
 
         } else {
 
             //store new image for file name
-            $image_rec = $this->newImage($bucket_id, $filename, $mime);
+            $image_rec = $this->newImage();
             if (isset($image_rec)) {
                 $md5 = md5($image_rec->id);
                 $image_rec->bucket_id = $bucket_id;
@@ -125,10 +133,10 @@ class BucketController extends Controller
                 $image_rec->mime = $mime;
                 $image_rec->md5 = $md5;
                 $image_rec->description = $description;
-                $image_rec->deleted = $deleted;
+                $image_rec->deleted = false;
                 $image_rec = $this->updateImage($image_rec);
                 if (isset($image_rec)) {
-                    $file->move($this->path . $this->md5path($md5), $this->md5filename($md5));
+                    $file->move(md5path($md5), md5filename($md5));
                 } else {
                     return Response::create("<h1>$category, $key: image detail could not be updated</h1>", 404);
                 }
@@ -150,7 +158,7 @@ class BucketController extends Controller
     {
 
         // find category and key key pair
-        $bucket = $this->getBucket($category,$key);
+        $bucket = $this->getBucket($category, $key);
 
         if(isset($bucket)) {
 
@@ -161,13 +169,13 @@ class BucketController extends Controller
 
                 // find the first image stored for the category and key key pair
                 // for the filename given.
-                $image_rec = Images::where(compact('bucket_id', 'filename'))->first();
+                $image_rec = Image::where(compact('bucket_id', 'filename'))->first();
 
             } else {
 
                 // find the first image record stored for the category and key key pair,
                 // if possible
-                $image_rec = Images::where(compact('bucket_id'))->first();
+                $image_rec = Image::where(compact('bucket_id'))->first();
 
             }
 
@@ -182,8 +190,8 @@ class BucketController extends Controller
 
                 // get locate stored from md5 hash save in image table
                 $md5 = $image_rec->md5;
-                $md5path = $this->path.$this->md5path($md5);
-                $md5filename = $this->md5filename($md5);
+                $md5path = md5path($md5);
+                $md5filename = md5filename($md5);
 
                 // find and return the image, if possible
                 if (file_exists($md5path . $md5filename)) {
@@ -229,7 +237,7 @@ class BucketController extends Controller
     {
 
         // find category and key key pair
-        $bucket = $this->getBucket($category,$key);
+        $bucket = $this->getBucket($category, $key);
 
         if(isset($bucket)) {
 
@@ -240,13 +248,13 @@ class BucketController extends Controller
 
                 // find the first image stored for the category and key key pair
                 // for the filename given.
-                $image_rec = Images::where(compact('bucket_id', 'filename'))->first();
+                $image_rec = Image::where(compact('bucket_id', 'filename'))->first();
 
             } else {
 
                 // find the first image record stored for the category and key key pair,
                 // if possible
-                $image_rec = Images::where(compact('bucket_id'))->first();
+                $image_rec = Image::where(compact('bucket_id'))->first();
 
             }
 
@@ -254,13 +262,14 @@ class BucketController extends Controller
             if (isset($image_rec)) {
 
                 // load information stored in image table
+                $filename = $image_rec->filename;
                 $mime = $image_rec->mime;
                 $description = $image_rec->description;
 
                 // get locate stored from md5 hash save in image table
                 $md5 = $image_rec->md5;
-                $md5path = $this->path.$this->md5path($md5);
-                $md5filename = $this->md5filename($md5);
+                $md5path = md5path($md5);
+                $md5filename = md5filename($md5);
 
                 // find and return the image, if possible
                 if (file_exists($md5path . $md5filename)) {
@@ -282,15 +291,17 @@ class BucketController extends Controller
                         )
                     );
 
+                } else {
+                    return Response::create("<h1>$category, $key, $filename: file not found</h1>", 404);
                 }
 
             } else {
 
-                return Response::create("<h1>$category, $key, $filename: image not found</h1>", 404);
+                return Response::create("<h1>$category, $key, $filename: image not defined</h1>", 404);
             }
         }
 
-        return Response::create("<h1>$category, $key: not found</h1>", 404);
+        return Response::create("<h1>$category, $key: bucket not found</h1>", 404);
 
     }
 
@@ -302,8 +313,8 @@ class BucketController extends Controller
     public function newBucket($category, $key)
     {
 
-        //create buckets record
-        $bucket = new Buckets;
+        //create bucket record
+        $bucket = new Bucket;
         $category_id = Category::where(compact('category'))->first()->id;
         $bucket->category_id = $category_id;
         $bucket->key = $key;
@@ -321,7 +332,7 @@ class BucketController extends Controller
     public function newImage()
     {
 
-        $image_rec = new Images;
+        $image_rec = new Image;
         if($image_rec->save()) {
             return $image_rec;
         } else {
@@ -352,41 +363,23 @@ class BucketController extends Controller
 
     }
 
-    /**
-     * @param $md5
-     * @return string
-     */
-    public function md5path($md5)
-    {
-
-        $md5path = substr($md5,0,3)."/".substr($md5,3,3)."/".substr($md5,6,3)."/";
-        return $md5path;
-
-    }
-
-    /**
-     * @param $md5
-     * @return string
-     */
-    public function md5filename($md5)
-    {
-
-        $md5filename = substr($md5,9,23);
-        return $md5filename;
-
-    }
 
     /**
      * @param $category
      * @param $key
      * @return mixed
      */
-    public function getBucket($category,$key)
+    public function getBucket($category, $key)
     {
         // find category and key key pair
-        $category_id = Category::where(compact('category'))->first()->id;
-        $bucket = Buckets::where(compact('category_id'), compact('key'))->first();
-        return $bucket;
+        $category_rec = Category::where(compact('category'))->first();
+        if (isset($category_rec)) {
+            $category_id = $category_rec->id;
+            $bucket = Bucket::where(compact('category_id', 'key'))->first();
+            return $bucket;
+        } else {
+            return null;
+        }
     }
 
 }

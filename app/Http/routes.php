@@ -25,6 +25,8 @@
 
 Route::group(['middleware' => ['web']], function () {
 
+    Route::resource('image', 'ImageController');
+
     Route::resource('category', 'CategoryController');
 
     Route::post('{category}/{key}', 'BucketController@post');

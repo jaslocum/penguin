@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
-class ImagesTableSeeder extends Seeder
+class ImageTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,8 +15,9 @@ class ImagesTableSeeder extends Seeder
         //
         Model::unguard();
 
-        DB::table('images')->insert([
+        DB::table('image')->insert([
             'id' => 1,
+            'size' => 29802,
             'bucket_id' => 1,
             'deleted' => false,
             'description' => 'penguin image',

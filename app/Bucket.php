@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Buckets extends Model
+class Bucket extends Model
 {
 
     /**
@@ -13,16 +13,18 @@ class Buckets extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
 
-    protected $fillable = array('category','key');
+    protected $fillable = array();
+
+    protected $table = 'bucket';
 
     public function images()
     {
-        return $this->hasMany('App\Images');
+        return $this->hasMany('App\Image');
     }
 
     public function category()
     {
-        return $this->hasOne('App\Category_definition');
+        return $this->hasOne('App\Category');
     }
 
 }

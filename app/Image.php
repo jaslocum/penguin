@@ -4,10 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Images extends Model
+class Image extends Model
 {
 
-    protected $fillable = array('category','category_rec_id');
+    protected $fillable = array('description');
+
+    protected $table = 'image';
 
     public function category()
     {
