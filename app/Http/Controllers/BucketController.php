@@ -57,11 +57,12 @@ class BucketController extends Controller
     {
         // find category and key key pair
         $bucket_rec = $this->getBucket($category, $key);
-        $bucket_id = $bucket_rec->id;
-        $category_id = $bucket_rec->category_id;
-        $category_rec = Category::where(['id'=>$category_id])->first();
 
         if(isset($bucket_rec)) {
+
+            $bucket_id = $bucket_rec->id;
+            $category_id = $bucket_rec->category_id;
+            $category_rec = Category::where(['id'=>$category_id])->first();
 
             return view('bucket.update', compact('category','key','bucket_id', 'category_rec'));
 
@@ -69,6 +70,7 @@ class BucketController extends Controller
 
             $bucket_rec = $this->newBucket($category, $key);
             $bucket_id = $bucket_rec->id;
+            $category_rec = Category::where(compact('category'))->first();
 
             if (isset($bucket_rec)){
                 return view('bucket.update', compact('category','key','bucket_id', 'category_rec'));
