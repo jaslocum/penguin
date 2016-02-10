@@ -187,7 +187,7 @@
                 }
             }
         
-            // find out how many buckets are in the lines and collect labels
+            // find out how many bucket are in the lines and collect labels
             var labels = [];
             var numcats = 0;
             var min = 0.5;

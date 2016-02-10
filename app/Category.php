@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     /**
-     * A Category_definition can have many buckets.
+     * A Category_definition can have many bucket.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -18,7 +18,7 @@ class Category extends Model
 
     public function buckets()
     {
-        return $this->hasMany('App\Buckets');
+        return $this->hasMany('App\Bucket');
     }
 
 }

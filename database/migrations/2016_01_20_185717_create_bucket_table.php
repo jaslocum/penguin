@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBucketsTable extends Migration
+class CreateBucketTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateBucketsTable extends Migration
      */
     public function up()
     {
-        Schema::create('buckets', function (Blueprint $table) {
+        Schema::create('bucket', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('category_id')->unsigned();
             $table->string('key');
@@ -27,6 +27,6 @@ class CreateBucketsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('buckets');
+        Schema::drop('bucket');
     }
 }

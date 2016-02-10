@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateImagesTable extends Migration
+class CreateImageTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,10 @@ class CreateImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('images', function (Blueprint $table) {
+        Schema::create('image', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('bucket_id')->unsigned();
-            $table->foreign('bucket_id')->references('id')->on('buckets')->onDelete('cascade');
+            $table->foreign('bucket_id')->references('id')->on('bucket')->onDelete('cascade');
             $table->string('description');
             $table->string('filename');
             $table->integer('size')->unsigned();
@@ -33,6 +33,6 @@ class CreateImagesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('images');
+        Schema::drop('image');
     }
 }

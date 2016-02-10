@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
-class BucketsTableSeeder extends Seeder
+class BucketTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,7 +15,7 @@ class BucketsTableSeeder extends Seeder
         Model::unguard();
 
         // default bucket to store images for this server
-        DB::table('buckets')->insert([
+        DB::table('bucket')->insert([
             'id' => 1,
             'category_id' => '1',
             'key' => 'penguin'

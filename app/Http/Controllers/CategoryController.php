@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Request;
 use App\Category;
+use Request;
 
 class CategoryController extends Controller
 {
