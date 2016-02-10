@@ -4,7 +4,7 @@
 
     {!! Form::open(
                         [
-                            'route' => ['category_definitions.store'],
+                            'route' => ['category'],
                             'enctype' => 'multipart/form-data',
                             'class' => 'col-xs-6',
                             'method' => 'POST',

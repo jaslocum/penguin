@@ -3,13 +3,13 @@
 @section('content')
 
     {!! Form::model(
-                        $category_definition,
+                        $category,
                         [
-                            'route' => ['category_definitions.update', $category_definition['id']],
+                            'route' => ['category', $category['id']],
                             'enctype' => 'multipart/form-data',
                             'class' => 'col-xs-6',
                             'method' => 'put',
-                            'id' => '_category_definition_form'
+                            'id' => '_category_form'
                         ]
                     )
     !!}
@@ -18,7 +18,7 @@
             {!! Form::label ('category', 'category:') !!}
             {!! Form::text  (
                                 'category',
-                                $category_definition['category'],
+                                $category['category'],
                                 [
                                     'class'=>'form-control',
                                     'required'=>'required'
@@ -30,7 +30,7 @@
             {!! Form::label ('description', 'description:') !!}
             {!! Form::text  (
                                 'description',
-                                $category_definition['description'],
+                                $category['description'],
                                 [
                                     'class'=>'form-control'
                                 ]
@@ -41,7 +41,7 @@
             {!! Form::label ('mime', 'mime:') !!}
             {!! Form::text  (
                                 'mime',
-                                $category_definition['mime'],
+                                $category['mime'],
                                 [
                                     'class'=>'form-control'
                                 ]
@@ -52,7 +52,7 @@
             {!! Form::label ('max_size_MB', 'max size in MB:') !!}
             {!! Form::text  (
                                 'max_size_MB',
-                                $category_definition['max_size_MB'],
+                                $category['max_size_MB'],
                                 [
                                     'class'=>'form-control'
                                 ]
@@ -104,7 +104,7 @@
         document.getElementById("_delete").addEventListener("click", function(event){
             if (confirm("Delete?")) {
                 set_method('DELETE');
-                document.getElementById("_category_definition_form").submit();
+                document.getElementById("_category_form").submit();
             }
         });
         function set_method(method)
