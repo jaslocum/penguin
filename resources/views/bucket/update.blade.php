@@ -49,7 +49,7 @@
                         this.options.complete.call(this, file);
                     @endforeach
                 },
-                maxFilesize: '{{$category_rec->max_size_MB}}',
+                maxFilesize: {{$category_rec->max_size_MB}},
                 acceptedFiles: '{{$category_rec->mime}}',
                 addRemoveLinks: true,
                 dictDefaultMessage: '',
