@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use Request;
+use App\Category_definition;
 
 class CategoryDefinitionsController extends Controller
 {
@@ -16,40 +14,35 @@ class CategoryDefinitionsController extends Controller
      */
     public function index()
     {
-        //
         return view('category_definitions.index');
     }
 
     /**
-     * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        //
+        return view('category_definitions.create');
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store()
     {
-        //
+        $request = Request::all();
+        Category_definition::create($request);
+        return redirect('category_definitions');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        return redirect('category_definitions');
     }
 
     /**
@@ -58,21 +51,23 @@ class CategoryDefinitionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public static function edit($id)
     {
-        //
+        $category_definition = Category_definition::findOrFail($id);
+        return view('category_definitions.form',compact('category_definition'));
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
-        //
+
+        $request = Request::all();
+        Category_definition::findOrFail($id)->update($request);
+        return redirect('category_definitions');
     }
 
     /**
@@ -83,6 +78,7 @@ class CategoryDefinitionsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Category_definition::findOrFail($id)->delete();
+        return redirect('category_definitions');
     }
 }

@@ -18,4 +18,5 @@ class Category_definition extends Model
     {
         return $this->hasMany('App\Category');
     }
+
 }

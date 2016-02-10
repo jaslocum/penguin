@@ -3,24 +3,26 @@
 @section('content')
     <div class="jumbotron">
         <div class="container">
-            <h1>Image Server</h1>
+            <h2>Image Server</h2>
             <p>version 0.1</p>
-            <br>
-            <h2>Usage:</h2>
+            <img src="http://penguin.dev/penguin/penguin/penguinWithAttitude.jpg" alt="penguin with attitude" height="80" width="56">
+            <h3>Usage:</h3>
             <br>
             <p>Web interface to maintain images for a {category} and {category_rec_id} key pair:<p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;penguin/{category}/{category_rec_id}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;penguin/{category}/{category_rec_id}/update</p>
             <br>
             <p>Return first image for a {category} and {category_rec_id} key pair:<p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;penguin/{category}/{category_rec_id}/get</p>
-            <p></p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;penguin/{category}/{category_rec_id}</p>
             <br>
             <p>Return image for a {category}, {category_rec_id} and {filename} key set:<p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;penguin/{category}/{category_rec_id}/{filename}</p>
-            <p></p>
             <br>
             <p>Web interface to define categories for images:<p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;penguin/category_definitions</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="category_definitions/">
+                    penguin/category_definitions
+                </a>
+            </p>
             <p></p>
         </div>
     </div>
