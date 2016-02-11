@@ -322,7 +322,7 @@ class BucketController extends Controller
         if (isset($category_rec)){
             $category_id = $category_rec->id;
         } else {
-            $category_rec = newCategory($category);
+            $category_rec = $this->newCategory($category);
             if(isset($category_rec)){
                 $category_id = $category_rec->id;
             } else {
@@ -347,7 +347,12 @@ class BucketController extends Controller
     {
 
         $category_rec = new Category;
-        $category_rec->$category;
+        $category_rec->category = $category;
+        //default accepted mime types
+        $category_rec->mime = 'image/jpg, image/jpeg, image.png';
+        //default max file size that can be uploaded
+        $category_rec->max_size_MB = 5;
+
         if($category_rec->save()) {
             return $category_rec;
         } else {
