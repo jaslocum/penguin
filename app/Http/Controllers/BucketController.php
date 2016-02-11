@@ -318,7 +318,7 @@ class BucketController extends Controller
 
         //create bucket record
         $bucket = new Bucket;
-        $category_rec = Category::where(compact('category'))->first()->id;
+        $category_rec = Category::where(compact('category'))->first();
         if (isset($category_rec)){
             $category_id = $category_rec->id;
         } else {
