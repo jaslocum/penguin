@@ -7,7 +7,7 @@
                             'route' => ['category.store'],
                             'enctype' => 'multipart/form-data',
                             'class' => 'col-xs-6',
-                            'method' => 'POST',
+                            'method' => 'PUT',
                             'id' => '_category_definition_form'
                         ]
                     )
