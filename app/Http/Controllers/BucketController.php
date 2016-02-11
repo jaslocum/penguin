@@ -318,11 +318,38 @@ class BucketController extends Controller
 
         //create bucket record
         $bucket = new Bucket;
-        $category_id = Category::where(compact('category'))->first()->id;
+        $category_rec = Category::where(compact('category'))->first()->id;
+        if (isset($category_rec)){
+            $category_id = $category_rec->id;
+        } else {
+            $category_rec = newCategory($category);
+            if(isset($category_rec)){
+                $category_id = $category_rec->id;
+            } else {
+                return null;
+            }
+        }
         $bucket->category_id = $category_id;
         $bucket->key = $key;
         if ($bucket->save()){
             return $bucket;
+        } else {
+            return null;
+        }
+
+    }
+
+    /**
+     * @param $category
+     * @return Category|null
+     */
+    public function newCategory($category)
+    {
+
+        $category_rec = new Category;
+        $category_rec->$category;
+        if($category_rec->save()) {
+            return $category_rec;
         } else {
             return null;
         }
@@ -346,12 +373,6 @@ class BucketController extends Controller
 
     /**
      * @param $image_rec
-     * @param $bucket_id
-     * @param $filename
-     * @param $mime
-     * @param $md5
-     * @param $description
-     * @param boolean $deleted
      * @return null
      */
     public function updateImage($image_rec)
