@@ -22,7 +22,7 @@ class ImageTableSeeder extends Seeder
             'deleted' => false,
             'description' => 'penguin image',
             'filename' => 'penguinWithAttitude.jpg',
-            'md5' => '1679091c5a880faf6fb5e6087eb1b2dc',
+            'md5' => 'c4ca4238a0b923820dcc509a6f75849b',
             'mime' => 'image/jpg'
         ]);
 
