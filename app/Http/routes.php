@@ -25,6 +25,11 @@
 
 Route::group(['middleware' => ['web']], function () {
 
+    Route::get('/session',function()
+    {
+        return view('pages.session');
+    });
+
     Route::resource('image', 'ImageController');
 
     Route::resource('category', 'CategoryController');
