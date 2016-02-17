@@ -2,6 +2,7 @@
 /node_modules
 /.idea
 /public/images
+/public/imageJpg
 Homestead.yaml
 Homestead.json
 .env
