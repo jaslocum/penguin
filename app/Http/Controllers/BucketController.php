@@ -91,6 +91,8 @@ class BucketController extends Controller
     public function post(Request $request, $category, $key)
     {
 
+echo "we made it this far...";
+
         //get file info from request
         $file = $request->file('file');
         $filename = $file->getClientOriginalName();
