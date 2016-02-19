@@ -15,7 +15,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT ID FROM Image ORDER BY ID ASC";
+$sql = "SELECT ID FROM Image ORDER BY ID DESC";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
