@@ -91,9 +91,24 @@ $sql =
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
-    $i = 0;
+
+    $i = 1001;
+
     // output data of each row
-    while(($row = $result->fetch_assoc()) && ($i <= 100000)) {
+    while($row = $result->fetch_assoc()) {
+
+
+        if ($i>1000) {
+            //refresh session csrf token
+            $session = $url_base."session";
+            $sessionResult = $client->get("$session",['cookies'=>$jar]);
+            $sessionBody = str_replace('&quot;','"',(string) $sessionResult->getBody());
+            $sessionToken = (array) json_decode($sessionBody);
+            $i=0;
+        } else {
+            ++$i;
+        }
+
 
         $PartID = $row["ID"];
         $PtImageId = $row["PtImageID"];
@@ -124,6 +139,7 @@ if ($result->num_rows > 0) {
         }
 
         echo "$PartID: $filePath\r\n";
+
         ++$i;
     }
 
