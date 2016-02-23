@@ -139,8 +139,7 @@ if ($result->num_rows > 0) {
         }
 
         echo "$PartID: $filePath\r\n";
-
-        ++$i;
+        
     }
 
 } else {
