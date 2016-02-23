@@ -6,6 +6,9 @@ require 'vendor/autoload.php';
 require 'config/getBmpImages.php';
 require 'config/uploadImages.php';
 
+/*** set error handler level to E_WARNING ***/
+set_error_handler('custom_handler', E_WARNING);
+
 $client = new Client;
 $jar = new CookieJar();
 
@@ -35,9 +38,8 @@ $sql =
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
-    $i = 0;
     // output data of each row
-    while(($row = $result->fetch_assoc()) && ($i <= 100000)) {
+    while($row = $result->fetch_assoc()) {
 
         $workorder = $row["WORKORDR"];
         $WoImageId = $row["WoImageID"];
@@ -72,7 +74,7 @@ if ($result->num_rows > 0) {
         }
 
         echo "$workorder: $filePath\r\n";
-        ++$i;
+
     }
 
 } else {
@@ -91,9 +93,9 @@ $sql =
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
-    $i = 0;
+
     // output data of each row
-    while(($row = $result->fetch_assoc()) && ($i <= 100000)) {
+    while($row = $result->fetch_assoc()) {
 
         $PartID = $row["ID"];
         $PtImageId = $row["PtImageID"];
@@ -105,26 +107,31 @@ if ($result->num_rows > 0) {
         //Open file as stream to upload
         $body = fopen($filePath, 'r');
 
-        if ($body && $PtImageId>0) {
-            $resultPost = $client->post($uri, [
-                'cookies' => $jar,
-                'multipart' => [
-                    [
-                        'name' => '_token',
-                        'contents' => $sessionToken['_token']
-                    ],
-                    [
-                        'name' => "file",
-                        'contents' => $body,
-                        'filename' => "$PtImageId.jpg",
-                        'type' => $mime
-                    ],
-                ]
-            ]);
+        echo "PartID: $PartID, filePath: $filePath, mime: $mime\r\n";
+        try {
+            if ($body && $PtImageId > 0) {
+                $resultPost = $client->post($uri, [
+                    'cookies' => $jar,
+                    'multipart' => [
+                        [
+                            'name' => '_token',
+                            'contents' => $sessionToken['_token']
+                        ],
+                        [
+                            'name' => "file",
+                            'contents' => $body,
+                            'filename' => "$PtImageId.jpg",
+                            'type' => $mime
+                        ],
+                    ]
+                ]);
+            }
         }
-
-        echo "$PartID: $filePath\r\n";
-        ++$i;
+        catch (Exception $e)
+        {
+            /*** show the error message ***/
+            echo $e->getMessage();
+        }
     }
 
 } else {
@@ -132,3 +139,10 @@ if ($result->num_rows > 0) {
 }
 
 $conn->close();
+
+function custom_handler($errno, $errmsg){
+
+    //throw new Exception('This Error Happened '.$errno.': '. $errmsg);
+    echo "errno: $errno, errmsg: $errmsg\r\n";
+
+}

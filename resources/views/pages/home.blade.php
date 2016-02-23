@@ -17,6 +17,9 @@
             <p>Return an image for a {filename} in a bucket with {category} and {key}:<p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Request::root()}}/{category}/{category_rec_id}/{filename}</p>
             <br>
+            <p>Return an image by {image_id}:<p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Request::root()}}/image/{image_id}</p>
+            <br>
             <p>Web interface to define categories for images:<p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a href="category/">
