@@ -148,6 +148,11 @@ class BucketController extends Controller
 
         }
 
+        //image was updated successfully
+        //return id for image to be accessed directly, if needed
+        $id = $image_rec->id;
+        return Response::create(null,200,['id'=>$id]);
+
     }
 
     /**
@@ -178,7 +183,7 @@ class BucketController extends Controller
                 // find the first image record stored for the category and key key pair,
                 // if possible
                 $deleted = false;
-                $image_rec = Image::orderby('id')->where(compact('bucket_id','deleted'))->first();
+                $image_rec = Image::orderby('id','DESC')->where(compact('bucket_id','deleted'))->first();
 
             }
 
