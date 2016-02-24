@@ -191,6 +191,7 @@ class BucketController extends Controller
             if (isset($image_rec)) {
 
                 // load information stored in image table
+                $image_id = $image_rec->id;
                 $size = $image_rec->size;
                 $mime = $image_rec->mime;
                 $description = $image_rec->description;
@@ -209,7 +210,9 @@ class BucketController extends Controller
                     // return file
                     return Response::create($content,
                         200,
-                        array('content-type' => $mime,
+                        array(
+                            'id' => $image_id,
+                            'content-type' => $mime,
                             'description' => $description,
                             'filename' => $filename,
                             'size' => $size,

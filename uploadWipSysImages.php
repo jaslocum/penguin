@@ -94,6 +94,8 @@ $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
 
+    $i = 0;
+
     // output data of each row
     while($row = $result->fetch_assoc()) {
 
@@ -130,6 +132,17 @@ if ($result->num_rows > 0) {
                 echo "PartID: $PartID, filePath: $filePath, mime: $mime, image_id:$image_id, stream: $stream\r\n";
 
             }
+
+            if ($i>1000){
+                $session = $url_base."session";
+                $sessionResult = $client->get("$session",['cookies'=>$jar]);
+                $sessionBody = str_replace('&quot;','"',(string) $sessionResult->getBody());
+                $sessionToken = (array) json_decode($sessionBody);
+                $i = 0;
+            } else {
+                ++$i;
+            }
+
         }
         catch (Exception $e)
         {
