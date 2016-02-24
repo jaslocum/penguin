@@ -11,5 +11,5 @@ $mime = "image/jpg";
 
 $servername = "eagle";
 $username = "wipsys";
-$password = "****";
+$password = "*";
 $dbname = "WipSys";
