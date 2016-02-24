@@ -37,7 +37,7 @@ $sql =
 
 $result = $conn->query($sql);
 
-if ($result->num_rows > 0) {
+if ($result->num_rows < 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
 
@@ -78,7 +78,7 @@ if ($result->num_rows > 0) {
     }
 
 } else {
-    echo "0 results";
+    echo "0 results\r\n";
 }
 
 $sql =
@@ -107,7 +107,6 @@ if ($result->num_rows > 0) {
         //Open file as stream to upload
         $body = fopen($filePath, 'r');
 
-        echo "PartID: $PartID, filePath: $filePath, mime: $mime\r\n";
         try {
             if ($body && $PtImageId > 0) {
                 $resultPost = $client->post($uri, [
@@ -125,6 +124,11 @@ if ($result->num_rows > 0) {
                         ],
                     ]
                 ]);
+
+                $image_id = $resultPost->getHeaders()['id'][0];
+                $stream = $resultPost->getBody();
+                echo "PartID: $PartID, filePath: $filePath, mime: $mime, image_id:$image_id, stream: $stream\r\n";
+
             }
         }
         catch (Exception $e)
@@ -135,7 +139,7 @@ if ($result->num_rows > 0) {
     }
 
 } else {
-    echo "0 results";
+    echo "0 results\r\n";
 }
 
 $conn->close();
