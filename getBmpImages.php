@@ -6,7 +6,7 @@
  * Time: 11:33 AM
  */
 
-require ('config/getBmpImages.php');
+require('config/bmpImages.php');
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
