@@ -4,7 +4,6 @@
 /public/images
 /public/imageJpg
 /public/imageBmp
-/config/getBmpImages.php
 Homestead.yaml
 Homestead.json
 .env

@@ -3,7 +3,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 
 require 'vendor/autoload.php';
-require 'config/getBmpImages.php';
+require 'config/bmpImages.php';
 require 'config/uploadImages.php';
 
 /*** set error handler level to E_WARNING ***/
