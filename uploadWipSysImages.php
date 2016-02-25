@@ -132,10 +132,13 @@ if ($result->num_rows > 0) {
             }
 
         }
-        catch (Exception $e)
+        catch (\GuzzleHttp\Exception\ClientException $e)
         {
+
+            $error = $e->getResponse()->getBody()->getContents();
+
             /*** show the error message ***/
-            var_dump($resultPost);
+            var_dump($error);
 
             echo "\r\n";
             echo $e->getMessage();
@@ -160,8 +163,6 @@ if ($result->num_rows > 0) {
 
             //Open file as stream to upload
             $body = fopen($filePath, 'r');
-
-
         }
 
     }
