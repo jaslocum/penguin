@@ -139,19 +139,6 @@ if ($result->num_rows > 0) {
 
             init_session($url_base, $client, $jar, $session_token);
 
-/**
-            $row = $result->fetch_assoc();
-
-            $PartID = $row["ID"];
-            $PtImageId = $row["PtImageID"];
-
-            $fileName = "$PtImageId.jpg";
-            $filePath = $path.$fileName;
-            $uri = $url_base."ptimg/$PartID";
-
-            //Open file as stream to upload
-            $body = fopen($filePath, 'r');
- **/
         }
 
     }
