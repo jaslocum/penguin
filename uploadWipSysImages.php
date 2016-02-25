@@ -94,8 +94,6 @@ $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
 
-    $i = 0;
-
     // output data of each row
     while($row = $result->fetch_assoc()) {
 
@@ -138,8 +136,10 @@ if ($result->num_rows > 0) {
         {
             /*** show the error message ***/
             var_dump($resultPost);
+
             echo "\r\n";
             echo $e->getMessage();
+            echo "\r\n";
 
             $client = new Client;
             $jar = new CookieJar();
@@ -148,6 +148,19 @@ if ($result->num_rows > 0) {
             $sessionResult = $client->get("$session",['cookies'=>$jar]);
             $sessionBody = str_replace('&quot;','"',(string) $sessionResult->getBody());
             $sessionToken = (array) json_decode($sessionBody);
+
+            $row = $result->fetch_assoc();
+
+            $PartID = $row["ID"];
+            $PtImageId = $row["PtImageID"];
+
+            $fileName = "$PtImageId.jpg";
+            $filePath = $path.$fileName;
+            $uri = $url_base."ptimg/$PartID";
+
+            //Open file as stream to upload
+            $body = fopen($filePath, 'r');
+
 
         }
 
