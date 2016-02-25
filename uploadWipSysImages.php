@@ -132,16 +132,10 @@ if ($result->num_rows > 0) {
             }
 
         }
-        catch (\GuzzleHttp\Exception\ClientException $e)
+        catch (Exception $e)
         {
-
-            $error = $e->getResponse()->getBody()->getContents();
-
             /*** show the error message ***/
-            var_dump($error);
-
-            echo "\r\n";
-            echo $e->getMessage();
+            var_dump($e->getResponse()->getBody()->getContents());
             echo "\r\n";
 
             $client = new Client;
