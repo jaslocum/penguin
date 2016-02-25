@@ -11,11 +11,9 @@ set_error_handler('custom_handler', E_WARNING);
 
 $client = new Client;
 $jar = new CookieJar();
+$session_token = array();
 
-$session = $url_base."session";
-$sessionResult = $client->get("$session",['cookies'=>$jar]);
-$sessionBody = str_replace('&quot;','"',(string) $sessionResult->getBody());
-$sessionToken = (array) json_decode($sessionBody);
+init_session($url_base, $client, $jar, $session_token);
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -60,7 +58,7 @@ if ($result->num_rows < 0) {
                     'multipart' => [
                         [
                             'name' => '_token',
-                            'contents' => $sessionToken['_token']
+                            'contents' => $session_token['_token']
                         ],
                         [
                             'name' => "file",
@@ -114,7 +112,7 @@ if ($result->num_rows > 0) {
                     'multipart' => [
                         [
                             'name' => '_token',
-                            'contents' => $sessionToken['_token']
+                            'contents' => $session_token['_token']
                         ],
                         [
                             'name' => "file",
@@ -135,29 +133,12 @@ if ($result->num_rows > 0) {
         catch (Exception $e)
         {
             /*** show the error message ***/
+            echo "\r\n";
             var_dump($e->getResponse()->getBody()->getContents());
             echo "\r\n";
 
-            $client = new Client;
-            $jar = new CookieJar();
+            init_session($url_base, $client, $jar, $session_token);
 
-            $session = $url_base."session";
-            $sessionResult = $client->get("$session",['cookies'=>$jar]);
-            $sessionBody = str_replace('&quot;','"',(string) $sessionResult->getBody());
-            $sessionToken = (array) json_decode($sessionBody);
-/**
-            $row = $result->fetch_assoc();
-
-            $PartID = $row["ID"];
-            $PtImageId = $row["PtImageID"];
-
-            $fileName = "$PtImageId.jpg";
-            $filePath = $path.$fileName;
-            $uri = $url_base."ptimg/$PartID";
-
-            //Open file as stream to upload
-            $body = fopen($filePath, 'r');
- **/
         }
 
     }
@@ -172,5 +153,14 @@ function custom_handler($errno, $errmsg){
 
     //throw new Exception('This Error Happened '.$errno.': '. $errmsg);
     echo "errno: $errno, errmsg: $errmsg\r\n";
+
+}
+
+function init_session($url_base, &$client, &$jar, &$session_token){
+
+    $session = $url_base."session";
+    $sessionResult = $client->get("$session",['cookies'=>$jar]);
+    $sessionBody = str_replace('&quot;','"',(string) $sessionResult->getBody());
+    $session_token = (array) json_decode($sessionBody);
 
 }
