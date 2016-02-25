@@ -163,6 +163,7 @@ class BucketController extends Controller
             'size' => $size,
             'mime' => $mime,
             'description' => $description,
+            'md5' => $md5,
         ]);
 
     }
@@ -235,7 +236,18 @@ class BucketController extends Controller
 
                 } else {
 
-                    return Response::create("<h1>$category, $key: image not found</h1>", 404);
+                    return Response::create("<h1>$category, $key: image not found</h1>",
+                        404,
+                        array(
+                            'id' => $image_id,
+                            'content-type' => $mime,
+                            'description' => $description,
+                            'filename' => $filename,
+                            'size' => $size,
+                            'md5' => $md5,
+                            'deleted' => $deleted
+                        )
+                    );
 
                 }
 
@@ -285,9 +297,11 @@ class BucketController extends Controller
             if (isset($image_rec)) {
 
                 // load information stored in image table
-                $filename = $image_rec->filename;
+                $image_id = $image_rec->id;
+                $size = $image_rec->size;
                 $mime = $image_rec->mime;
                 $description = $image_rec->description;
+                $deleted = $image_rec->deleted;
 
                 // get locate stored from md5 hash save in image table
                 $md5 = $image_rec->md5;
@@ -315,7 +329,18 @@ class BucketController extends Controller
                     );
 
                 } else {
-                    return Response::create("<h1>$category, $key, $filename: file not found</h1>", 404);
+                    return Response::create("<h1>$category, $key, $filename: file not found</h1>",
+                        404,
+                        array(
+                            'id' => $image_id,
+                            'content-type' => $mime,
+                            'description' => $description,
+                            'filename' => $filename,
+                            'size' => $size,
+                            'md5' => $md5,
+                            'deleted' => $deleted
+                        )
+                    );
                 }
 
             } else {
