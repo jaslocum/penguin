@@ -133,6 +133,7 @@ class BucketController extends Controller
             if (isset($image_rec)) {
 
                 $md5 = md5($image_rec->id);
+                $image_rec->bucket_id = $bucket_id;
                 $image_rec->filename = $filename;
                 $image_rec->size = $size;
                 $image_rec->mime = $mime;
