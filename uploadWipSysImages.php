@@ -145,7 +145,7 @@ if ($result->num_rows > 0) {
             $sessionResult = $client->get("$session",['cookies'=>$jar]);
             $sessionBody = str_replace('&quot;','"',(string) $sessionResult->getBody());
             $sessionToken = (array) json_decode($sessionBody);
-
+/**
             $row = $result->fetch_assoc();
 
             $PartID = $row["ID"];
@@ -157,6 +157,7 @@ if ($result->num_rows > 0) {
 
             //Open file as stream to upload
             $body = fopen($filePath, 'r');
+ **/
         }
 
     }
