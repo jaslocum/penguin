@@ -108,13 +108,10 @@ class BucketController extends Controller
             if ($bucket === null) {
                 return Response::create("<h1>$category, $key: bucket could not be found or created</h1>", 404);
             }
-
-        } else {
-
-            //get unique bucket_id for category and key key pair
-            $bucket_id = $bucket->id;
-
         }
+
+        //get unique bucket_id for category and key key pair
+        $bucket_id = $bucket->id;
 
         // find existing image stored under filename for bucket_id, if possible
         $image_rec = Image::where(compact('bucket_id', 'filename'))->first();
@@ -132,9 +129,10 @@ class BucketController extends Controller
 
             //store new image for file name
             $image_rec = $this->newImage();
+
             if (isset($image_rec)) {
+
                 $md5 = md5($image_rec->id);
-                $image_rec->bucket_id = $bucket_id;
                 $image_rec->filename = $filename;
                 $image_rec->size = $size;
                 $image_rec->mime = $mime;
@@ -142,6 +140,7 @@ class BucketController extends Controller
                 $image_rec->description = $description;
                 $image_rec->deleted = false;
                 $image_rec = $this->updateImage($image_rec);
+
                 if (isset($image_rec)) {
                     $file->move(md5path($md5), md5filename($md5));
                 } else {
@@ -156,6 +155,8 @@ class BucketController extends Controller
         //image was updated successfully
         //return id for image to be accessed directly, if needed
         $id = $image_rec->id;
+        $bucket_id = $image_rec->bucket_id;
+
         return Response::create(null,200,[
             'image_id' => $id,
             'category' => $category,
