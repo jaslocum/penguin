@@ -103,14 +103,18 @@ class BucketController extends Controller
         $bucket = $this->getBucket($category, $key);
 
         if ($bucket === null) {
+
             $bucket = $this->newBucket($category, $key);
             if ($bucket === null) {
                 return Response::create("<h1>$category, $key: bucket could not be found or created</h1>", 404);
             }
-        }
 
-        //get unique bucket_id for category and key key pair
-        $bucket_id = $bucket->id;
+        } else {
+
+            //get unique bucket_id for category and key key pair
+            $bucket_id = $bucket->id;
+
+        }
 
         // find existing image stored under filename for bucket_id, if possible
         $image_rec = Image::where(compact('bucket_id', 'filename'))->first();

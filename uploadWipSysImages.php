@@ -137,8 +137,9 @@ if ($result->num_rows > 0) {
         catch (Exception $e)
         {
             /*** show the error message ***/
-            $stream = $resultPost->getBody();
-            echo $e->getMessage().', '."stream: $stream";
+            var_dump($resultPost);
+            echo "\r\n";
+            echo $e->getMessage();
         }
 
     }
