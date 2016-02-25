@@ -132,7 +132,7 @@ if ($result->num_rows > 0) {
             }
 
         }
-        catch (\GuzzleHttp\Exception\ClientException $e)
+        catch (\GuzzleHttp\Exception\ServerException $e)
         {
 
             $error = $e->getResponse()->getBody()->getContents();
