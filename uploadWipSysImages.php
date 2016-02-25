@@ -11,7 +11,7 @@ set_error_handler('custom_handler', E_WARNING);
 
 $client = new Client;
 $jar = new CookieJar();
-$sessionToken = array();
+$session_token = array();
 
 init_session($url_base, $client, $jar, $session_token);
 
@@ -58,7 +58,7 @@ if ($result->num_rows < 0) {
                     'multipart' => [
                         [
                             'name' => '_token',
-                            'contents' => $sessionToken['_token']
+                            'contents' => $session_token['_token']
                         ],
                         [
                             'name' => "file",
@@ -112,7 +112,7 @@ if ($result->num_rows > 0) {
                     'multipart' => [
                         [
                             'name' => '_token',
-                            'contents' => $sessionToken['_token']
+                            'contents' => $session_token['_token']
                         ],
                         [
                             'name' => "file",
@@ -133,11 +133,12 @@ if ($result->num_rows > 0) {
         catch (Exception $e)
         {
             /*** show the error message ***/
+            echo "\r\n";
             var_dump($e->getResponse()->getBody()->getContents());
             echo "\r\n";
 
-            init_session($url_base, $client, $jar, $sessionToken);
-            
+            init_session($url_base, $client, $jar, $session_token);
+
 /**
             $row = $result->fetch_assoc();
 
@@ -168,11 +169,11 @@ function custom_handler($errno, $errmsg){
 
 }
 
-function init_session($url_base, &$client, &$jar, &$sessionToken){
+function init_session($url_base, &$client, &$jar, &$session_token){
 
     $session = $url_base."session";
     $sessionResult = $client->get("$session",['cookies'=>$jar]);
     $sessionBody = str_replace('&quot;','"',(string) $sessionResult->getBody());
-    $sessionToken = (array) json_decode($sessionBody);
+    $session_token = (array) json_decode($sessionBody);
 
 }
