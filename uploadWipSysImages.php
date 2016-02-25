@@ -11,11 +11,9 @@ set_error_handler('custom_handler', E_WARNING);
 
 $client = new Client;
 $jar = new CookieJar();
+$sessionToken = array();
 
-$session = $url_base."session";
-$sessionResult = $client->get("$session",['cookies'=>$jar]);
-$sessionBody = str_replace('&quot;','"',(string) $sessionResult->getBody());
-$sessionToken = (array) json_decode($sessionBody);
+init_session($url_base, $client, $jar, $session_token);
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -138,13 +136,8 @@ if ($result->num_rows > 0) {
             var_dump($e->getResponse()->getBody()->getContents());
             echo "\r\n";
 
-            $client = new Client;
-            $jar = new CookieJar();
-
-            $session = $url_base."session";
-            $sessionResult = $client->get("$session",['cookies'=>$jar]);
-            $sessionBody = str_replace('&quot;','"',(string) $sessionResult->getBody());
-            $sessionToken = (array) json_decode($sessionBody);
+            init_session($url_base, $client, $jar, $sessionToken);
+            
 /**
             $row = $result->fetch_assoc();
 
@@ -172,5 +165,14 @@ function custom_handler($errno, $errmsg){
 
     //throw new Exception('This Error Happened '.$errno.': '. $errmsg);
     echo "errno: $errno, errmsg: $errmsg\r\n";
+
+}
+
+function init_session($url_base, &$client, &$jar, &$sessionToken){
+
+    $session = $url_base."session";
+    $sessionResult = $client->get("$session",['cookies'=>$jar]);
+    $sessionBody = str_replace('&quot;','"',(string) $sessionResult->getBody());
+    $sessionToken = (array) json_decode($sessionBody);
 
 }
