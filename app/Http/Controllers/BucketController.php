@@ -154,11 +154,11 @@ class BucketController extends Controller
 
         //image was updated successfully
         //return id for image to be accessed directly, if needed
-        $id = $image_rec->id;
+        $image_id = $image_rec->id;
         $bucket_id = $image_rec->bucket_id;
 
         return Response::create(null,200,[
-            'image_id' => $id,
+            'image_id' => $image_id,
             'category' => $category,
             'key' => $key,
             'bucket_id'=> $bucket_id,
