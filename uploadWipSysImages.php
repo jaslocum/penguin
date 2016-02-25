@@ -137,8 +137,18 @@ if ($result->num_rows > 0) {
         catch (Exception $e)
         {
             /*** show the error message ***/
-            $stream = $resultPost->getBody();
-            echo $e->getMessage().', '."stream: $stream";
+            var_dump($resultPost);
+            echo "\r\n";
+            echo $e->getMessage();
+
+            $client = new Client;
+            $jar = new CookieJar();
+
+            $session = $url_base."session";
+            $sessionResult = $client->get("$session",['cookies'=>$jar]);
+            $sessionBody = str_replace('&quot;','"',(string) $sessionResult->getBody());
+            $sessionToken = (array) json_decode($sessionBody);
+
         }
 
     }
