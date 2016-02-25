@@ -133,22 +133,16 @@ if ($result->num_rows > 0) {
 
             }
 
-            if ($i>1000){
-                $session = $url_base."session";
-                $sessionResult = $client->get("$session",['cookies'=>$jar]);
-                $sessionBody = str_replace('&quot;','"',(string) $sessionResult->getBody());
-                $sessionToken = (array) json_decode($sessionBody);
-                $i = 0;
-            } else {
-                ++$i;
-            }
-
         }
         catch (Exception $e)
         {
             /*** show the error message ***/
             echo $e->getMessage();
         }
+
+        //close stream
+        fclose($body);
+
     }
 
 } else {
