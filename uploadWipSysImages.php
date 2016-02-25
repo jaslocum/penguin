@@ -127,9 +127,10 @@ if ($result->num_rows > 0) {
                     ]
                 ]);
 
-                $image_id = $resultPost->getHeaders()['id'][0];
-                $stream = $resultPost->getBody();
-                echo "PartID: $PartID, filePath: $filePath, mime: $mime, image_id:$image_id, stream: $stream\r\n";
+                $image_id = $resultPost->getHeaders()['image_id'][0];
+                $file_path = $resultPost->getHeaders()['file_path'][0];
+                //$stream = $resultPost->getBody();
+                echo "PartID: $PartID, filePath: $filePath, mime: $mime, image_id:$image_id, file_path: $file_path\r\n";
 
             }
 

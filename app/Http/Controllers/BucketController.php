@@ -96,6 +96,7 @@ class BucketController extends Controller
         $filename = $file->getClientOriginalName();
         $size = $file->getSize();
         $mime = $file->getMimeType();
+        $file_path = $file->getPathName();
         $description = "";
 
         //find existing category and key key pair if possible
@@ -151,7 +152,18 @@ class BucketController extends Controller
         //image was updated successfully
         //return id for image to be accessed directly, if needed
         $id = $image_rec->id;
-        return Response::create(null,200,['id'=>$id]);
+        return Response::create(null,200,[
+            'image_id' => $id,
+            'category' => $category,
+            'key' => $key,
+            'bucket_id'=> $bucket_id,
+            'deleted'=> false,
+            'file_name'=> $filename,
+            'file_path' => $file_path,
+            'size' => $size,
+            'mime' => $mime,
+            'description' => $description,
+        ]);
 
     }
 
