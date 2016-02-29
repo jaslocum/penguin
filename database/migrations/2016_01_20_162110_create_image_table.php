@@ -16,7 +16,6 @@ class CreateImageTable extends Migration
             $table->increments('id');
             $table->integer('bucket_id')->unsigned();
             $table->foreign('bucket_id')->references('id')->on('bucket')->onDelete('cascade');
-            $table->string('description');
             $table->string('filename');
             $table->integer('size')->unsigned();
             $table->string('mime');

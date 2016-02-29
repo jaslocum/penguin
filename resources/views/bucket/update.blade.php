@@ -3,7 +3,9 @@
 @extends('layout')
 
 @section('content')
-    <h1>{{$category}} - {{$key}}</h1>
+    <h1>
+        {{$category}}: {{$key}}@if(strlen($description)>0), {{$description}}@endif
+    </h1>
     <hr>
     <div class="row">
         <form id="imageForm" method="post" action="/{{$category}}/{{$key}}" class="dropzone" category="{{$category}}" key="{{$key}}">
@@ -51,6 +53,7 @@
                 },
                 maxFilesize: {{$category_rec->max_size_MB}},
                 acceptedFiles: '{{$category_rec->mime}}',
+                headers: {description: "{{$description}}"},
                 addRemoveLinks: true,
                 dictDefaultMessage: '',
             };

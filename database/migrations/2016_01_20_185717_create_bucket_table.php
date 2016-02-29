@@ -16,6 +16,7 @@ class CreateBucketTable extends Migration
             $table->increments('id');
             $table->integer('category_id')->unsigned();
             $table->string('key');
+            $table->string('description')->default('');
             $table->timestamps();
         });
     }
