@@ -41,7 +41,7 @@ $sql =
 
 $result = $conn->query($sql);
 
-if ($result->num_rows > 0) {
+if ($result->num_rows < 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
 
@@ -98,7 +98,7 @@ if ($result->num_rows > 0) {
 $sql =
     "
       SELECT
-        ID, CUSTCODE, PARTNUM, ImageID AS PtImageID
+        ID, CUSTCODE, PROCNUM, PARTNAME, ImageID AS PtImageID
       FROM
         Part
       ORDER BY ID DESC
@@ -114,12 +114,13 @@ if ($result->num_rows > 0) {
         $PartID = $row["ID"];
         $PtImageId = $row["PtImageID"];
         $custCode  = $row["CUSTCODE"];
+        $procName   = $row["PROCNAME"];
         $partNum   = $row["PARTNUM"];
 
         $fileName = "$PtImageId.jpg";
         $filePath = $path.$fileName;
         $uri = $url_base."ptimg/$PartID";
-        $description = "$partNum";
+        $description = "$custCode, $procName, $partNum";
 
         if ($PtImageId>0) {
 
