@@ -18,7 +18,8 @@ class BucketTableSeeder extends Seeder
         DB::table('bucket')->insert([
             'id' => 1,
             'category_id' => '1',
-            'key' => 'penguin'
+            'key' => 'penguin',
+            'description' => 'image server bucket'
         ]);
 
     }

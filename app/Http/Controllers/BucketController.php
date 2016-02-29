@@ -7,6 +7,7 @@ use App\Category;
 use App\Image;
 use App\helpers;
 use Illuminate\Http\Request;
+use Mockery\Loader\RequireLoaderTest;
 use Symfony\Component\HttpFoundation\Response;
 
 class BucketController extends Controller
@@ -53,32 +54,33 @@ class BucketController extends Controller
      * @param  string $key
      * @return \Illuminate\Http\Response
      */
-    public function update($category, $key)
+    public function update( Request $request, $category, $key)
     {
+
         // find category and key key pair
         $bucket_rec = $this->getBucket($category, $key);
 
-        if(isset($bucket_rec)) {
-
-            $bucket_id = $bucket_rec->id;
-            $category_id = $bucket_rec->category_id;
-            $category_rec = Category::where(['id'=>$category_id])->first();
-
-            return view('bucket.update', compact('category','key','bucket_id', 'category_rec'));
-
-        } else {
+        if(!isset($bucket_rec)) {
 
             $bucket_rec = $this->newBucket($category, $key);
-            $bucket_id = $bucket_rec->id;
-            $category_rec = Category::where(compact('category'))->first();
 
-            if (isset($bucket_rec)){
-                return view('bucket.update', compact('category','key','bucket_id', 'category_rec'));
-            } else {
+            if (!isset($bucket_rec)){
                 return "<h1>$category, $key: bucket could not be created</h1>";
             }
 
         }
+
+        $bucket_id = $bucket_rec->id;
+        $category_rec = Category::where(['id'=>$bucket_rec->category_id])->first();
+
+        if(isset($request->description)){
+            $bucket_rec->description = $request->description;
+            $bucket_rec->save();
+        }
+
+        $description = $bucket_rec->description;
+
+        return view('bucket.update', compact('category','key','bucket_id', 'category_rec', 'description'));
 
    }
 
@@ -97,17 +99,22 @@ class BucketController extends Controller
         $size = $file->getSize();
         $mime = $file->getMimeType();
         $file_path = $file->getPathName();
+        //no method yet exists to create image descriptions
+        //only bucket descriptions exist
+        //$description = $request->header('description');
         $description = "";
 
         //find existing category and key key pair if possible
         $bucket = $this->getBucket($category, $key);
 
-        if ($bucket === null) {
+        if (!isset($bucket)) {
 
             $bucket = $this->newBucket($category, $key);
-            if ($bucket === null) {
+
+            if (!isset($bucket)) {
                 return Response::create("<h1>$category, $key: bucket could not be found or created</h1>", 404);
             }
+
         }
 
         //get unique bucket_id for category and key key pair
@@ -369,22 +376,20 @@ class BucketController extends Controller
         //create bucket record
         $bucket = new Bucket;
         $category_rec = Category::where(compact('category'))->first();
-        if (isset($category_rec)){
-            $category_id = $category_rec->id;
-        } else {
+        if (!isset($category_rec)){
             $category_rec = $this->newCategory($category);
-            if(isset($category_rec)){
-                $category_id = $category_rec->id;
-            } else {
-                return null;
+            if(!isset($category_rec)){
+                return;
             }
         }
-        $bucket->category_id = $category_id;
+
+        $bucket->category_id = $category_rec->id;
         $bucket->key = $key;
+
         if ($bucket->save()){
             return $bucket;
         } else {
-            return null;
+            return;
         }
 
     }
@@ -406,7 +411,7 @@ class BucketController extends Controller
         if($category_rec->save()) {
             return $category_rec;
         } else {
-            return null;
+            return;
         }
 
     }
@@ -441,7 +446,6 @@ class BucketController extends Controller
         }
 
     }
-
 
     /**
      * @param $category
