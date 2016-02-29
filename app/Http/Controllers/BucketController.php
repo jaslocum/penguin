@@ -99,26 +99,29 @@ class BucketController extends Controller
         $size = $file->getSize();
         $mime = $file->getMimeType();
         $file_path = $file->getPathName();
-        //no method yet exists to create image descriptions
-        //only bucket descriptions exist
-        //$description = $request->header('description');
-        $description = "";
 
         //find existing category and key key pair if possible
-        $bucket = $this->getBucket($category, $key);
+        $bucket_rec = $this->getBucket($category, $key);
 
-        if (!isset($bucket)) {
+        if (!isset($bucket_rec)) {
 
-            $bucket = $this->newBucket($category, $key);
+            $bucket_rec = $this->newBucket($category, $key);
 
-            if (!isset($bucket)) {
+            if (!isset($bucket_rec)) {
                 return Response::create("<h1>$category, $key: bucket could not be found or created</h1>", 404);
             }
 
         }
 
-        //get unique bucket_id for category and key key pair
-        $bucket_id = $bucket->id;
+        //update bucket with most recent description in response header
+        $description = $request->get('description');
+        if(isset($description)){
+            $bucket_rec->description = $request->description;
+            $bucket_rec->save();
+        }
+
+        $bucket_id = $bucket_rec->id;
+        $description = $bucket_rec->description;
 
         // find existing image stored under filename for bucket_id, if possible
         $image_rec = Image::where(compact('bucket_id', 'filename'))->first();
@@ -145,7 +148,6 @@ class BucketController extends Controller
                 $image_rec->size = $size;
                 $image_rec->mime = $mime;
                 $image_rec->md5 = $md5;
-                $image_rec->description = $description;
                 $image_rec->deleted = false;
                 $image_rec = $this->updateImage($image_rec);
 

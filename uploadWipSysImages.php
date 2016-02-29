@@ -53,7 +53,8 @@ if ($result->num_rows > 0) {
 
         $fileName = "$WoImageId.jpg";
         $filePath = $path.$fileName;
-        $uri = $url_base."woimg/$workorder"."?description=$custCode, $partNum";
+        $uri = $url_base."woimg/$workorder";
+        $description = "$custCode, $partNum";
 
         if ($WoImageId!=$PtImageId and $WoImageId>0) {
 
@@ -65,15 +66,18 @@ if ($result->num_rows > 0) {
                     'cookies' => $jar,
                     'multipart' => [
                         [
+                            'name' => 'description',
+                            'contents' => $description,
+                        ],
+                        [
                             'name' => '_token',
-                            'contents' => $session_token['_token']
+                            'contents' => $session_token['_token'],
                         ],
                         [
                             'name' => "file",
                             'contents' => $body,
                             'filename' => "$WoImageId.jpg",
                             'type' => $mime,
-                            'description' => "$custCode, $partNum",
                         ],
                     ]
                 ]);
@@ -112,7 +116,7 @@ if ($result->num_rows > 0) {
 
         $fileName = "$PtImageId.jpg";
         $filePath = $path.$fileName;
-        $uri = $url_base."ptimg/$PartID"."?description=$custCode, $partNum";
+        $uri = $url_base."ptimg/$PartID";
 
         if ($PtImageId>0) {
 
@@ -125,15 +129,15 @@ if ($result->num_rows > 0) {
                         'cookies' => $jar,
                         'multipart' => [
                             [
-                                'name' => '_token',
-                                'contents' => $session_token['_token']
+                                'name'     => '_token',
+                                'contents' => $session_token['_token'],
+                                'headers'  => ['description' => "$custCode, $partNum"]
                             ],
                             [
                                 'name' => "file",
                                 'contents' => $body,
                                 'filename' => "$PtImageId.jpg",
-                                'type' => $mime,
-                                //'description' => "$custCode, $partNum",
+                                'type' => $mime
                             ],
                         ]
                     ]);
