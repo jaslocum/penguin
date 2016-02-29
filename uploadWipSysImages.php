@@ -28,6 +28,7 @@ $sql =
       SELECT
         WORKORDR,
         Workorder.CUSTCODE,
+        Workorder.PROCNAME,
         Workorder.PARTNUM,
         Workorder.PartID AS partID,
         Workorder.ImageID AS WoImageID,
@@ -50,11 +51,12 @@ if ($result->num_rows > 0) {
         $PtImageId = $row["PtImageID"];
         $custCode  = $row["CUSTCODE"];
         $partNum   = $row["PARTNUM"];
+        $process   = $row["PROCNAME"];
 
         $fileName = "$WoImageId.jpg";
         $filePath = $path.$fileName;
         $uri = $url_base."woimg/$workorder";
-        $description = "$custCode, $partNum";
+        $description = "$custCode, $process, $partNum";
 
         if ($WoImageId!=$PtImageId and $WoImageId>0) {
 
@@ -117,6 +119,7 @@ if ($result->num_rows > 0) {
         $fileName = "$PtImageId.jpg";
         $filePath = $path.$fileName;
         $uri = $url_base."ptimg/$PartID";
+        $description = "$partNum";
 
         if ($PtImageId>0) {
 
@@ -128,6 +131,10 @@ if ($result->num_rows > 0) {
                     $resultPost = $client->post($uri, [
                         'cookies' => $jar,
                         'multipart' => [
+                            [
+                                'name' => 'description',
+                                'contents' => $description,
+                            ],
                             [
                                 'name'     => '_token',
                                 'contents' => $session_token['_token'],
