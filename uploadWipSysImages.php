@@ -28,6 +28,7 @@ $sql =
       SELECT
         WORKORDR,
         Workorder.CUSTCODE,
+        Workorder.PROCNAME,
         Workorder.PARTNUM,
         Workorder.PartID AS partID,
         Workorder.ImageID AS WoImageID,
@@ -40,7 +41,7 @@ $sql =
 
 $result = $conn->query($sql);
 
-if ($result->num_rows > 0) {
+if ($result->num_rows < 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
 
@@ -50,11 +51,12 @@ if ($result->num_rows > 0) {
         $PtImageId = $row["PtImageID"];
         $custCode  = $row["CUSTCODE"];
         $partNum   = $row["PARTNUM"];
+        $process   = $row["PROCNAME"];
 
         $fileName = "$WoImageId.jpg";
         $filePath = $path.$fileName;
         $uri = $url_base."woimg/$workorder";
-        $description = "$custCode, $partNum";
+        $description = "$custCode, $process, $partNum";
 
         if ($WoImageId!=$PtImageId and $WoImageId>0) {
 
@@ -96,7 +98,7 @@ if ($result->num_rows > 0) {
 $sql =
     "
       SELECT
-        ID, CUSTCODE, PARTNUM, ImageID AS PtImageID
+        ID, CUSTCODE, PROCNUM, PARTNAME, ImageID AS PtImageID
       FROM
         Part
       ORDER BY ID DESC
@@ -112,11 +114,13 @@ if ($result->num_rows > 0) {
         $PartID = $row["ID"];
         $PtImageId = $row["PtImageID"];
         $custCode  = $row["CUSTCODE"];
+        $procName   = $row["PROCNAME"];
         $partNum   = $row["PARTNUM"];
 
         $fileName = "$PtImageId.jpg";
         $filePath = $path.$fileName;
         $uri = $url_base."ptimg/$PartID";
+        $description = "$custCode, $procName, $partNum";
 
         if ($PtImageId>0) {
 
@@ -128,6 +132,10 @@ if ($result->num_rows > 0) {
                     $resultPost = $client->post($uri, [
                         'cookies' => $jar,
                         'multipart' => [
+                            [
+                                'name' => 'description',
+                                'contents' => $description,
+                            ],
                             [
                                 'name'     => '_token',
                                 'contents' => $session_token['_token'],
