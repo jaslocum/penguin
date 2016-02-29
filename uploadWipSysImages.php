@@ -98,7 +98,7 @@ if ($result->num_rows < 0) {
 $sql =
     "
       SELECT
-        ID, CUSTCODE, PROCNAME, PARTNAME, ImageID AS PtImageID
+        ID, CUSTCODE, PROCNAME, PARTNUM, ImageID AS PtImageID
       FROM
         Part
       ORDER BY ID DESC
