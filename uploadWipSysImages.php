@@ -98,6 +98,79 @@ if ($result->num_rows > 0) {
 $sql =
     "
       SELECT
+        WORKORDR,
+        History.CUSTCODE,
+        History.PROCNAME,
+        History.PARTNUM,
+        History.PartID AS partID,
+        History.ImageID AS WoImageID,
+        Part.ImageID AS PtImageID
+      FROM
+        History
+      JOIN Part Where History.PartID = Part.ID
+      ORDER BY WORKORDR DESC
+    ";
+
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+
+        $workorder = $row["WORKORDR"];
+        $WoImageId = $row["WoImageID"];
+        $PartID    = $row["partID"];
+        $PtImageId = $row["PtImageID"];
+        $custCode  = $row["CUSTCODE"];
+        $partNum   = $row["PARTNUM"];
+        $process   = $row["PROCNAME"];
+
+        $fileName = "$WoImageId.jpg";
+        $filePath = $path.$fileName;
+        $uri = $url_base."woimg/$workorder";
+        $description = "$custCode, $process, $partNum";
+
+        if ($WoImageId!=$PtImageId and $WoImageId>0) {
+
+            //Open file as stream to upload
+            $body = fopen($filePath, 'r');
+
+            if ($body) {
+                $resultPost = $client->post($uri, [
+                    'cookies' => $jar,
+                    'multipart' => [
+                        [
+                            'name' => 'description',
+                            'contents' => $description,
+                        ],
+                        [
+                            'name' => '_token',
+                            'contents' => $session_token['_token'],
+                        ],
+                        [
+                            'name' => "file",
+                            'contents' => $body,
+                            'filename' => "$WoImageId.jpg",
+                            'type' => $mime,
+                        ],
+                    ]
+                ]);
+
+                $image_id = $resultPost->getHeaders()['image_id'][0];
+                $file_path = $resultPost->getHeaders()['file_path'][0];
+                echo "History: $workorder, WoPartID: $PartID, filePath: $filePath, mime: $mime, image_id:$image_id, file_path: $file_path\r\n";
+            }
+        }
+    }
+
+} else {
+    echo "0 results\r\n";
+}
+
+$sql =
+    "
+      SELECT
         ID, CUSTCODE, PROCNAME, PARTNUM, ImageID AS PtImageID
       FROM
         Part
