@@ -19,6 +19,7 @@
             <br>
             <p>Return an image by {image_id}:<p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Request::root()}}/image/{image_id}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Request::root()}}/{image_id}</p>
             <br>
             <p>Web interface to define categories for images:<p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

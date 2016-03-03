@@ -111,7 +111,6 @@
         {
             document.getElementsByName('_method')[0].value = method;
         }
-
     </script>
 
 @endsection
