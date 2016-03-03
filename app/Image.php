@@ -16,4 +16,36 @@ class Image extends Model
         return $this->belongsTo('App\Category');
     }
 
+    /**
+     * @return Images|null
+     */
+    static public function newImage()
+    {
+
+        $image_rec = new Image;
+        if($image_rec->save()) {
+            return $image_rec;
+        } else {
+            return null;
+        }
+
+    }
+
+    /**
+     * @param $image_rec
+     * @return null
+     */
+    static public function updateImage($image_rec)
+    {
+
+        //update image record
+        if($image_rec->save()) {
+            return $image_rec;
+        } else {
+            return null;
+        }
+
+    }
+
+
 }
