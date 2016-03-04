@@ -40,6 +40,8 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('{image}/destroy', 'ImageController@destroy');
 
+    Route::get('image/edit','ImageController@edit');
+
     Route::get('{image}/edit', 'ImageController@edit');
 
     Route::post('{category}/{key}', 'BucketController@post');

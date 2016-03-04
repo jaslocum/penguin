@@ -28,7 +28,7 @@ class Bucket extends Model
         return $this->hasOne('App\Category');
     }
 
-    static public function newBucket($category, $key, $description = "")
+    static public function newBucket($category, $key=null, $description = "")
     {
 
         //create bucket record
@@ -69,11 +69,10 @@ class Bucket extends Model
 
     }
 
-
     /**
      * @param $category
      * @param $key
-     * @return mixed
+     * @return null
      */
     static public function getBucket($category, $key)
     {
@@ -81,8 +80,12 @@ class Bucket extends Model
         $category_rec = Category::where(compact('category'))->first();
         if (isset($category_rec)) {
             $category_id = $category_rec->id;
-            $bucket = Bucket::where(compact('category_id', 'key'))->first();
-            return $bucket;
+            $bucket_rec = Bucket::where(compact('category_id', 'key'))->first();
+            if(isset($bucket_rec)){
+                return $bucket_rec;
+            } else {
+                return null;
+            }
         } else {
             return null;
         }
@@ -92,7 +95,55 @@ class Bucket extends Model
      * @param $id
      * @return null
      */
-    static public function getCategory($id)
+    static public function getBucketById($id)
+    {
+        $bucket_rec = Bucket::where(compact('id'))->first();
+        if(isset($bucket_rec)){
+            return $bucket_rec;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @param $id
+     * @return null
+     */
+    static public function getCategoryRec($id)
+    {
+        // get bucket
+        $bucket_rec = Bucket::where(compact('id'))->first();
+
+        if (isset($bucket_rec)) {
+
+            $category_id = $bucket_rec->category_id;
+
+            // find category and key key pair
+            $category_rec = Category::where(['id'=>compact('category_id')])->first();
+
+            if (isset($category_rec)) {
+
+                return $category_rec;
+
+            } else {
+
+                return null;
+
+            }
+
+        } else {
+
+            return null;
+
+        }
+
+    }
+
+    /**
+     * @param $id
+     * @return null
+     */
+    static public function getCategoryName($id)
     {
         // get bucket
         $bucket_rec = Bucket::where(compact('id'))->first();
@@ -120,6 +171,20 @@ class Bucket extends Model
 
         }
 
+    }
+
+    static public function getDescription($request){
+
+        // set description if passed as a header or url parameter
+        if(isset($request->description)) {
+
+            return $request->description;
+
+        }else{
+
+            return null;
+
+        }
     }
 
 }

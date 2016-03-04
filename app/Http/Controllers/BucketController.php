@@ -56,13 +56,8 @@ class BucketController extends Controller
     public function edit( Request $request, $category, $key)
     {
 
-        if(isset($request->description)) {
-            $description = $request->description;
-        }else{
-            $description = "";
-        }
+        $description = Bucket::getDescription($request);
 
-        // find category and key key pair
         $bucket_rec = Bucket::getBucket($category, $key);
 
         if(!isset($bucket_rec)) {
@@ -71,14 +66,25 @@ class BucketController extends Controller
 
             if (!isset($bucket_rec)){
 
-                return "<h1>$category, $key: bucket could not be created</h1>";
+                return Response::create("<h1>$category, $key: bucket could not be created</h1>", 404);
 
             }
 
+        } else {
+
+            //update bucket with most recent description in response header
+            if(isset($description)) {
+                $bucket_rec->description = $description;
+                Bucket::updateBucket();
+
+                if (!isset($bucket_rec)) {
+                    return Response::create("<h1>$category, $key: bucket could not be updated</h1>", 404);
+                }
+
+            }
         }
 
         $bucket_id = $bucket_rec->id;
-        $bucket_rec->description = $description;
 
         return view('bucket.edit', compact('category','key','bucket_id', 'category_rec', 'description'));
 
@@ -92,12 +98,8 @@ class BucketController extends Controller
      */
     public function post(Request $request, $category, $key)
     {
-        // set description if passed as a header
-        if(isset($request->description)) {
-            $description = $request->description;
-        }else{
-            $description = "";
-        }
+
+        $description = Bucket::getDescription();
 
         //get file info from request
         $file = $request->file('file');
@@ -117,11 +119,23 @@ class BucketController extends Controller
                 return Response::create("<h1>$category, $key: bucket could not be created</h1>", 404);
             }
 
+        } else {
+
+            //update bucket with most recent description in response header
+
+            if(isset($description)) {
+                $bucket_rec->description = $description;
+                Bucket::updateBucket();
+
+                if (!isset($bucket_rec)) {
+                    return Response::create("<h1>$category, $key: bucket could not be updated</h1>", 404);
+                }
+
+            }
+
         }
 
-        //update bucket with most recent description in response header
         $bucket_id = $bucket_rec->id;
-        $description = $bucket_rec->description;
 
         // find existing image stored under filename for bucket_id, if possible
         $image_rec = Image::where(compact('bucket_id', 'filename'))->first();
@@ -154,7 +168,7 @@ class BucketController extends Controller
                 if (isset($image_rec)) {
                     $file->move(md5path($md5), md5filename($md5));
                 } else {
-                    return Response::create("<h1>$category, $key: image detail could not be updated</h1>", 404);
+                    return Response::create("<h1>$category, $key: image could not be updated</h1>", 404);
                 }
             } else {
                 return Response::create("<h1>$category, $key, $filename: image record could not be added</h1>", 404);

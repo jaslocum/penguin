@@ -8,9 +8,10 @@
             <img src="{{Request::root()}}/1" alt="penguin with attitude" height="80" width="56">
             <h3>Usage:</h3>
             <br>
-            <p>Web interface to edit a {category}/{key} bucket or an {image} bucket:<p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Request::root()}}/{category}/{key}/edit</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Request::root()}}/{image}/edit</p>
+            <p>Web interface to edit/create a {category}/{key} bucket or an {image} bucket:<p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Request::root()}}/{category}/{key}/edit[?description={description}]</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Request::root()}}/{image}/edit[?description={description}]</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Request::root()}}/image/edit[?description={description}]</p>
             <br>
             <p>Return first image in a {category}/{key} bucket:<p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Request::root()}}/{category}/{key}</p>
