@@ -30,19 +30,21 @@ Route::group(['middleware' => ['web']], function () {
         return view('pages.session');
     });
 
-    Route::resource('image', 'ImageController');
-
-    Route::get('image/{image}/destroy', 'ImageController@destroy');
-
-    Route::get('image/{image}/index', 'ImageController@index');
-
-    Route::get('image/{image}/update', 'ImageController@update');
-
     Route::resource('category', 'CategoryController');
+
+    Route::get('/edit','ImageController@edit');
+
+    Route::get('/create','ImageController@edit');
+
+    Route::post('{image}','ImageController@update');
 
     Route::get('{image}','ImageController@show');
 
     Route::get('{image}/index','ImageController@index');
+
+    Route::get('{image}/destroy', 'ImageController@destroy');
+
+    Route::get('{image}/edit', 'ImageController@edit');
 
     Route::post('{category}/{key}', 'BucketController@post');
 
@@ -50,7 +52,9 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('{category}/{key}/index', 'BucketController@index');
 
-    Route::get('{category}/{key}/update', 'BucketController@update');
+    Route::get('{category}/{key}/create', 'BucketController@edit');
+
+    Route::get('{category}/{key}/edit', 'BucketController@edit');
 
     Route::get('{category}/{key}/destroy', 'BucketController@destroy');
 
@@ -58,6 +62,7 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('{category}/{key}/{filename}/destroy', 'BucketController@destroy');
 
+    Route::post('/','ImageController@create');
 
     Route::get('/', function () {
         return view('pages.home');

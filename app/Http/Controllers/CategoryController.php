@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Category;
-use Request;
+use Illuminate\Foundation\Validation;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -26,13 +27,29 @@ class CategoryController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store()
+    public function store(Request $request)
     {
-        $request = Request::all();
-        Category::create($request);
-        return redirect('category');
+
+        //validation
+        $validator = validator($request->all(), [
+            'category' => 'required|regex:/[A-z]/|min:3'
+        ]);
+
+        if ($validator->fails()) {
+
+            flash('Category','Category must contain at least on letter','info');
+            return redirect()->back();
+
+        } else {
+
+            Category::create($request->all());
+            return redirect('category');
+
+        }
+
     }
 
     /**
@@ -62,12 +79,25 @@ class CategoryController extends Controller
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function update($id)
+    public function update(Request $request, $id)
     {
+        //validation
+        $validator = validator($request->all(), [
+            'category' => 'required|regex:/[A-z]/|min:3'
+        ]);
 
-        $request = Request::all();
-        Category::findOrFail($id)->update($request);
-        return redirect('category');
+        if ($validator->fails()) {
+
+            flash('Category','A category must contain at least one letter and be a minimum of three characters long.','info');
+            return redirect()->back();
+
+        } else {
+
+
+            Category::findOrFail($id)->update($request->all());
+            return redirect('category');
+        }
+
     }
 
     /**

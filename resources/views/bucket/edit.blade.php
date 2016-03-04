@@ -3,9 +3,9 @@
 @extends('layout')
 
 @section('content')
-    <h1>
+    <h3>
         {{$category}}: {{$key}}@if(strlen($description)>0), {{$description}}@endif
-    </h1>
+    </h3>
     <hr>
     <div class="row">
         <form id="imageForm" method="post" action="/{{$category}}/{{$key}}" class="dropzone" category="{{$category}}" key="{{$key}}">
@@ -38,15 +38,10 @@
                             xhttp.send();
                         }
                     );
-                    this.on("",
-                        function () {
-
-                        }
-                    );
                     @foreach($image::images($bucket_id) as $image)
                         var file = {name:'{{$image->filename}}', size:'{{$image->size}}'};
                         this.options.addedfile.call(this, file);
-                        this.createThumbnailFromUrl(file,'{{Request::root()}}/image/{{$image->id}}');
+                        this.createThumbnailFromUrl(file,'{{Request::root()}}/{{$image->id}}');
                         // Make sure that there is no progress bar, etc...
                         this.options.complete.call(this, file);
                     @endforeach

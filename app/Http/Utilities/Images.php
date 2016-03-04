@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Images
 {
     /**
+     * @param $bucket_id
      * @return mixed
      */
     public static function images($bucket_id)
