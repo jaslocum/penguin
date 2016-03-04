@@ -81,7 +81,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //validation
+        //validation one letter required and min 3 chars long
         $validator = validator($request->all(), [
             'category' => 'required|regex:/[A-z]/|min:3'
         ]);
@@ -91,12 +91,22 @@ class CategoryController extends Controller
             flash('Category','A category must contain at least one letter and be a minimum of three characters long.','info');
             return redirect()->back();
 
-        } else {
-
-
-            Category::findOrFail($id)->update($request->all());
-            return redirect('category');
         }
+
+        //validation image and penguin are system categories that can not be used by clients
+        $validator = validator($request->all(), [
+            'category' => 'not_in:image,category'
+        ]);
+
+        if ($validator->fails()) {
+
+            flash('Category','A category can not be penguin or image.','info');
+            return redirect()->back();
+
+        }
+
+        Category::findOrFail($id)->update($request->all());
+        return redirect('category');
 
     }
 

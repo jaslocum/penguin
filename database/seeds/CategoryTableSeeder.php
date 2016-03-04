@@ -23,5 +23,12 @@ class CategoryTableSeeder extends Seeder
             'max_size_MB' => '5'
         ]);
 
+        DB::table('category')->insert([
+            'id' => 2,
+            'category' => 'image',
+            'description' => 'category for images accessed by image id only',
+            'mime' => 'image/jpg, image/jpeg, image/png',
+            'max_size_MB' => '5'
+        ]);
     }
 }
