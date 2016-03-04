@@ -2,7 +2,7 @@
 
 namespace App\Http\Utilities;
 
-use App\Image;
+use App\Images;
 
 class Image
 {
@@ -13,7 +13,7 @@ class Image
     public static function image($id)
     {
         $deleted = false;
-        $image = Image::where(compact('id', 'deleted'))->get();
+        $image = Images::where(compact('id', 'deleted'))->f();
         return $image;
     }
 
