@@ -54,6 +54,23 @@ class Bucket extends Model
     }
 
     /**
+     * @param $bucket_rec
+     * @return null
+     */
+    static public function updateBucket($bucket_rec)
+    {
+
+        //update image record
+        if($bucket_rec->save()) {
+            return $bucket_rec;
+        } else {
+            return null;
+        }
+
+    }
+
+
+    /**
      * @param $category
      * @param $key
      * @return mixed
@@ -69,6 +86,40 @@ class Bucket extends Model
         } else {
             return null;
         }
+    }
+
+    /**
+     * @param $id
+     * @return null
+     */
+    static public function getCategory($id)
+    {
+        // get bucket
+        $bucket_rec = Bucket::where(compact('id'))->first();
+
+        if (isset($bucket_rec)) {
+
+            $category_id = $bucket_rec->category_id;
+
+            // find category and key key pair
+            $category_rec = Category::where(['id'=>compact('category_id')])->first();
+
+            if (isset($category_rec)) {
+
+                return $category_rec->category;
+
+            } else {
+
+                return null;
+
+            }
+
+        } else {
+
+            return null;
+
+        }
+
     }
 
 }

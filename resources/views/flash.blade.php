@@ -6,8 +6,8 @@
             title: "{{ session('flash_message.title') }}",
             text: "{{ session('flash_message.message') }}",
             type: "{{ session('flash_message.level') }}",
-            timer: 1500,
-            showConfirmButton: false
+            timer: 2000,
+            showConfirmButton: true
         })
 
     </script>

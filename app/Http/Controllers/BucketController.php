@@ -48,13 +48,12 @@ class BucketController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  string $category
-     * @param  string $key
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $category
+     * @param $key
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
      */
-    public function update( Request $request, $category, $key)
+    public function edit( Request $request, $category, $key)
     {
 
         if(isset($request->description)) {
@@ -79,10 +78,9 @@ class BucketController extends Controller
         }
 
         $bucket_id = $bucket_rec->id;
+        $bucket_rec->description = $description;
 
-        $category_rec = Category::where(['id'=>$bucket_rec->category_id])->first();
-
-        return view('bucket.update', compact('category','key','bucket_id', 'category_rec', 'description'));
+        return view('bucket.edit', compact('category','key','bucket_id', 'category_rec', 'description'));
 
    }
 
@@ -90,7 +88,7 @@ class BucketController extends Controller
      * @param Request $request
      * @param $category
      * @param $key
-     * @return bool/mixed
+     * @return Response
      */
     public function post(Request $request, $category, $key)
     {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Request;
 use App\Image;
 use App\Bucket;
+use App\BucketController;
 use App\Category;
 use App\helpers;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,13 +33,18 @@ class ImageController extends Controller
 
             if (isset($bucket_rec)) {
 
-                // test if image exists for bucket_id and filename in image table
                 $description = $bucket_rec->description;
+                $category = Bucket::getCategory($bucket_id);
+                $key = $bucket_rec->key;
 
                 // add description to end of json
                 $json = $image_rec->toJson();
                 $json = substr($json,0,-1);
-                $json .= ',"description":"'.$description.'"}';
+                $json .= ',';
+                $json .= '"description":"'.$description.'",';
+                $json .= '"category":"'.$category.'",';
+                $json .= '"key":"'.$key.'"';
+                $json .= '}';
 
                 // return all info in image table for category and key key pair,
                 // $image_rec = json_encode($image_rec, JSON_PRETTY_PRINT);
@@ -59,30 +65,13 @@ class ImageController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
-    public function create()
+    public function create(Request $request)
     {
 
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        // set description if passed as a header
-        if(isset($request->description)) {
-            $description = $request->description;
-        }else{
-            $description = "";
-        }
+        $description = getDecription($request);
 
         //set default category and key
         $category = 'image';
@@ -220,21 +209,107 @@ class ImageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        //
+
+        $description = getDecription($request);
+
+        $category = 'image';
+        $key = $id;
+
+
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $id
+     * @return Response
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $description = getDecription($request);
+
+        //get file info from request
+        $file = $request->file('file');
+        $filename = $file->getClientOriginalName();
+        $size = $file->getSize();
+        $mime = $file->getMimeType();
+        $file_path = $file->getPathName();
+
+        // find the first image stored for $id
+        $image_rec = Image::where(compact('id'))->first();
+
+        if (isset($image_rec)) {
+
+            //get ids
+            $image_id = $image_rec->id;
+            $bucket_id = $image_rec->bucket_id;
+            $md5 = $image_rec->md5;
+
+            // get bucket
+            $bucket_rec = Bucket::where(compact('$bucket_id'))->first();
+
+            if (isset($bucket_rec)) {
+
+                $bucket_rec->description = $description;
+                $bucket_rec = Bucket::updateBucket();
+
+                if (isset($bucket_rec)) {
+
+                    $category = Bucket::getCategory($bucket_id);
+                    $key = $bucket_rec->key;
+
+                }else{
+
+                    return Response::create("<h1>$id: image bucket could not be updated</h1>", 404);
+
+                }
+
+            }else{
+
+                return Response::create("<h1>$id: image bucket could not be found</h1>", 404);
+
+            }
+
+            $image_rec->filename = $filename;
+            $image_rec->size = $size;
+            $image_rec->mime = $mime;
+            $image_rec->deleted = false;
+
+            $image_rec = Image::updateImage($image_rec);
+
+            if (isset($image_rec)) {
+
+                $file->move(md5path($md5), md5filename($md5));
+
+                //image was created successfully
+                return Response::create(null,200,[
+                    'image_id' => $image_id,
+                    'category' => $category,
+                    'key' => $key,
+                    'bucket_id'=> $bucket_id,
+                    'deleted'=> false,
+                    'file_name'=> $filename,
+                    'file_path' => $file_path,
+                    'size' => $size,
+                    'mime' => $mime,
+                    'description' => $description,
+                    'md5' => $md5,
+                ]);
+
+            } else {
+
+                return Response::create("<h1>$id: image detail not updated</h1>", 404);
+
+            }
+
+        } else {
+
+            return Response::create("<h1>$id: image record could not be found</h1>", 404);
+
+        }
+
     }
 
     /**
@@ -304,6 +379,20 @@ class ImageController extends Controller
             return Response::create("<h1>$id: image not defined</h1>", 404);
         }
 
+    }
+
+    public function getDescription($request){
+
+        // set description if passed as a header or url parameter
+        if(isset($request->description)) {
+
+            return $request->description;
+
+        }else{
+
+            return "";
+
+        }
     }
 
 }

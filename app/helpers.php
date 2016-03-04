@@ -8,7 +8,7 @@ function flash($title = null, $message = null, $level = null)
         return $flash;
    }
 
-    return $flash->info($title, $message, $level);
+    return $flash->overlay($title, $message, $level);
 }
 
 /**
