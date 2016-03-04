@@ -7,7 +7,7 @@ use App\Image;
 class Image
 {
     /**
-     * @param $bucket_id
+     * @param $id
      * @return mixed
      */
     public static function image($id)
