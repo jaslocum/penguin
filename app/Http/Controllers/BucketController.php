@@ -66,27 +66,42 @@ class BucketController extends Controller
 
             if (!isset($bucket_rec)){
 
-                return Response::create("<h1>$category, $key: bucket could not be created</h1>", 404);
+                return Response::create("<h1>$category, $key: bucket not created</h1>", 404);
+
+            }
+
+        }
+
+        //update bucket with most recent description in response header
+        if(isset($description)) {
+
+            $bucket_rec->description = $description;
+            Bucket::updateBucket($bucket_rec);
+
+            if (!isset($bucket_rec)) {
+
+                return Response::create("<h1>$category, $key: bucket description not updated</h1>", 404);
 
             }
 
         } else {
 
-            //update bucket with most recent description in response header
-            if(isset($description)) {
-                $bucket_rec->description = $description;
-                Bucket::updateBucket();
-
-                if (!isset($bucket_rec)) {
-                    return Response::create("<h1>$category, $key: bucket could not be updated</h1>", 404);
-                }
-
-            }
+            $description = $bucket_rec->description;
         }
 
         $bucket_id = $bucket_rec->id;
+        $category_rec = Bucket::getCategoryRec($bucket_id);
 
-        return view('bucket.edit', compact('category','key','bucket_id', 'category_rec', 'description'));
+        if(isset($category_rec)){
+
+            return view('bucket.edit', compact('category','key','bucket_id', 'category_rec', 'description'));
+
+        } else {
+
+            return Response::create("<h1>$category: category record not found</h1>", 404);
+
+        }
+
 
    }
 
@@ -99,7 +114,7 @@ class BucketController extends Controller
     public function post(Request $request, $category, $key)
     {
 
-        $description = Bucket::getDescription();
+        $description = Bucket::getDescription($request);
 
         //get file info from request
         $file = $request->file('file');
@@ -119,18 +134,16 @@ class BucketController extends Controller
                 return Response::create("<h1>$category, $key: bucket could not be created</h1>", 404);
             }
 
-        } else {
+        }
 
-            //update bucket with most recent description in response header
+        //update bucket with most recent description in response header
 
-            if(isset($description)) {
-                $bucket_rec->description = $description;
-                Bucket::updateBucket();
+        if(isset($description)) {
+            $bucket_rec->description = $description;
+            Bucket::updateBucket($bucket_rec);
 
-                if (!isset($bucket_rec)) {
-                    return Response::create("<h1>$category, $key: bucket could not be updated</h1>", 404);
-                }
-
+            if (!isset($bucket_rec)) {
+                return Response::create("<h1>$category, $key: bucket could not be updated</h1>", 404);
             }
 
         }
@@ -152,11 +165,11 @@ class BucketController extends Controller
         } else {
 
             //store new image for file name
-            $image_rec = Image::newImage();
+            $image_rec = Image::newImage($bucket_id);
 
             if (isset($image_rec)) {
 
-                $md5 = md5($image_rec->id);
+                $md5 = $image_rec->md5;
                 $image_rec->bucket_id = $bucket_id;
                 $image_rec->filename = $filename;
                 $image_rec->size = $size;

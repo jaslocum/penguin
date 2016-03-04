@@ -1,19 +1,20 @@
-@inject('image','App\Http\Utilities\Images')
+@inject('image','App\Http\Utilities\Image')
 
 @extends('layout')
 
 @section('content')
-    <h1>
+    <h3>
         <br>
         <p>{image}: {{$id}}</p>
         <p>{category}: {{$category}}</p>
         <p>{key}:{{$key}}</p>
-        <p>{description}: {{$id}}: @if(strlen($description)>0), {{$description}}@endif</p>
+        @if(strlen($description)>0)<p>{description}: {{$description}}</p>
+        @endif
         <br>
-    </h1>
+    </h3>
     <hr>
     <div class="row">
-        <form id="imageForm" method="post" action="/{{$category}}/{{$key}}" class="dropzone" category="{{$category}}" key="{{$key}}">
+        <form id="imageForm" method="post" action="/{{$id}}" class="dropzone" category="{{$category}}" key="{{$key}}">
             {{csrf_field()}}
             @include('errors.show')
         </form>
@@ -43,15 +44,10 @@
                             xhttp.send();
                         }
                     );
-                    this.on("",
-                        function () {
-
-                        }
-                    );
-                    @foreach($image::images($bucket_id) as $image)
+                    @foreach($image::image($id) as $image)
                         var file = {name:'{{$image->filename}}', size:'{{$image->size}}'};
                         this.options.addedfile.call(this, file);
-                        this.createThumbnailFromUrl(file,'{{Request::root()}}/image/{{$image->id}}');
+                        this.createThumbnailFromUrl(file,'{{Request::root()}}/{{$image->id}}');
                         // Make sure that there is no progress bar, etc...
                         this.options.complete.call(this, file);
                     @endforeach

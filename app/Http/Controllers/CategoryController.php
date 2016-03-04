@@ -88,7 +88,7 @@ class CategoryController extends Controller
 
         if ($validator->fails()) {
 
-            flash('Category','Category must contain at least on letter','info');
+            flash('Category','A category must contain at least one letter and be a minimum of three characters long.','info');
             return redirect()->back();
 
         } else {

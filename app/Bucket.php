@@ -32,7 +32,7 @@ class Bucket extends Model
     {
 
         //create bucket record
-        $bucket = new Bucket;
+        $bucket_rec = new Bucket;
         $category_rec = Category::where(compact('category'))->first();
         if (!isset($category_rec)){
             $category_rec = Category::newCategory($category);
@@ -41,14 +41,29 @@ class Bucket extends Model
             }
         }
 
-        $bucket->category_id = $category_rec->id;
-        $bucket->key = $key;
-        $bucket->description = $description;
+        $bucket_rec->category_id = $category_rec->id;
+        if(isset($description)){
+            $bucket_rec->description = $description;
+        }
 
-        if ($bucket->save()){
-            return $bucket;
+        if ($bucket_rec->save()){
+
+            if(isset($key)) {
+                $bucket_rec->key = $key;
+            }else{
+                $bucket_rec->key = $bucket_rec->id;
+            }
+
+            if ($bucket_rec->save()) {
+                return $bucket_rec;
+            }else{
+                return null;
+            }
+
         } else {
-            return;
+
+            return null;
+
         }
 
     }
@@ -180,11 +195,22 @@ class Bucket extends Model
 
             return $request->description;
 
-        }else{
+        } else {
 
-            return null;
+            $description = $request->header('description');
+
+            if( isset($description) ) {
+
+                return $description;
+
+            } else {
+
+                return null;
+
+            }
 
         }
+
     }
 
 }
