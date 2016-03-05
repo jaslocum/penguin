@@ -32,24 +32,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-
-        //validation
-        $validator = validator($request->all(), [
-            'category' => 'required|regex:/[A-z]/|min:3'
-        ]);
-
-        if ($validator->fails()) {
-
-            flash('Category','Category must contain at least on letter','info');
-            return redirect()->back();
-
-        } else {
+        if ($this->valid($request)){
 
             Category::create($request->all());
             return redirect('category');
 
-        }
+        } else {
 
+            return redirect()->back();
+
+        }
     }
 
     /**
@@ -63,15 +55,16 @@ class CategoryController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
-    public static function edit($id)
+    public function edit(Request $request, $id)
     {
+
         $category = Category::findOrFail($id);
-        return view('category.update',compact('category'));
+        return view('category.update', compact('category'));
+
     }
 
     /**
@@ -81,21 +74,15 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //validation
-        $validator = validator($request->all(), [
-            'category' => 'required|regex:/[A-z]/|min:3'
-        ]);
-
-        if ($validator->fails()) {
-
-            flash('Category','A category must contain at least one letter and be a minimum of three characters long.','info');
-            return redirect()->back();
-
-        } else {
-
+        if ($this->valid($request)){
 
             Category::findOrFail($id)->update($request->all());
             return redirect('category');
+
+        } else {
+
+            return redirect()->back();
+
         }
 
     }
@@ -103,7 +90,7 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -111,4 +98,38 @@ class CategoryController extends Controller
         Category::findOrFail($id)->delete();
         return redirect('category');
     }
+
+    /**
+     * @param $request
+     * @return bool
+     */
+    public function valid($request)
+    {
+
+        //validation
+        $validator = validator($request->all(), ['category' => 'required|regex:/[A-z]/']);
+
+        if ($validator->fails()) {
+
+            flash('Category', 'Category must contain at least one lette.', 'info');
+            return false;
+
+        }
+
+        //validation image and penguin are system categories that can not be used by clients
+        $validator = validator($request->all(), [
+            'category' => 'not_in:image,penguin'
+        ]);
+
+        if ($validator->fails()) {
+
+            flash('Category', 'A category can not be penguin or image.', 'info');
+            return false;
+
+        }
+
+        return true;
+
+    }
+
 }

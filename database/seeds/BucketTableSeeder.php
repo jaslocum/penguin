@@ -14,7 +14,7 @@ class BucketTableSeeder extends Seeder
         //
         Model::unguard();
 
-        // default bucket to store images for this server
+        // default bucket to store server application images
         DB::table('bucket')->insert([
             'id' => 1,
             'category_id' => '1',
