@@ -28,17 +28,39 @@ class BucketController extends Controller
 
                 // test if image exists for bucket_id and filename in image table
                 $bucket_id = $bucket_rec->id;
+                $description = $bucket_rec->description;
 
                 // find the first image record stored for the category and key key pair,
                 // if possible
-                $image_rec = Image::where(compact('bucket_id'))->orderby('id')->get()->toJson();
+                $image_recs = Image::where(compact('bucket_id'))->orderby('id')->get();
 
                 // find and return the image, if possible
-                if (isset($image_rec)) {
+                if (isset($image_recs)) {
+
+                    $json_image_recs="";
+
+                    foreach ($image_recs as $image_rec) {
+                        $json = $image_rec->toJson();
+                        $json = substr($json, 0, -1);
+                        $json .= ',';
+                        $json .= '"description":"' . $description . '",';
+                        $json .= '"category":"' . $category . '",';
+                        $json .= '"key":"' . $key . '"';
+                        $json .= '}';
+                        $json_image_recs .= $json;
+                    }
 
                     // return all info in image table for category and key key pair,
                     // $image_rec = json_encode($image_rec, JSON_PRETTY_PRINT);
-                    return Response::create($image_rec,200);
+                    if (strlen($json_image_recs)>0){
+
+                        return Response::create($json_image_recs,200);
+
+                    } else {
+
+                        return Response::create("<h1>$category, $key: no images in bucket</h1>", 404);
+
+                    }
 
                 }
 
@@ -276,7 +298,7 @@ class BucketController extends Controller
 
                 } else {
 
-                    return Response::create("<h1>$category, $key: image not found</h1>",
+                    return Response::create("<h1>$category, $key: image file not found</h1>",
                         404,
                         array(
                             'id' => $image_id,
@@ -293,11 +315,12 @@ class BucketController extends Controller
 
             } else {
 
-                return Response::create("<h1>$category, $key, $filename: image not found</h1>", 404);
+                return Response::create("<h1>$category, $key, $filename: image not in bucket</h1>", 404);
             }
         }
 
-        return Response::create("<h1>$category, $key: not found</h1>", 404);
+        return Response::create("<h1>$category, $key: bucket not found</h1>", 404);
+
     }
 
     /**

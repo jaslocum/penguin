@@ -28,8 +28,8 @@
             Dropzone.options.imageForm = {
                 init: function () {
                     this.on("addedfile",
-                        function(file) {
-                            alert("Added file.");
+                        function() {
+                            //
                         }
                     );
                     this.on("complete",
@@ -37,6 +37,10 @@
                             if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
                                 //alert("finished uploading...");
                             }
+                            window.open(
+                                    '{{Request::root()}}/{{$id}}/edit',
+                                    '_self' // <- This is what makes it open in a new window.
+                            )
                         }
                     );
                     this.on("removedfile",
@@ -45,7 +49,7 @@
                             var key = document.getElementById("imageForm").getAttribute('key');
                             var filename = file.name;
                             var xhttp = new XMLHttpRequest();
-                            xhttp.open("GET", '{{Request::root()}}'+'/'+category+'/'+key+'/'+filename+'/destroy', true);
+                            xhttp.open("GET", '{{Request::root()}}'+'/{{$id}}/destroy', true);
                             xhttp.send();
                         }
                     );
@@ -59,7 +63,7 @@
                                     '_blank' // <- This is what makes it open in a new window.
                             );
                         };
-                        this.createThumbnailFromUrl(file,'{{Request::root()}}/{{$image->id}}');
+                        this.createThumbnailFromUrl(file,'{{Request::root()}}/{{$id}}');
                         // Make sure that there is no progress bar, etc...
                         this.options.complete.call(this, file);
                     @endforeach
