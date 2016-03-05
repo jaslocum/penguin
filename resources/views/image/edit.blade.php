@@ -1,4 +1,4 @@
-@inject('image','App\Http\Utilities\Image')
+@inject('image','App\Http\Utilities\Images')
 
 @extends('layout')
 
@@ -27,6 +27,11 @@
     <script>
             Dropzone.options.imageForm = {
                 init: function () {
+                    this.on("addedfile",
+                        function(file) {
+                            alert("Added file.");
+                        }
+                    );
                     this.on("complete",
                         function(){
                             if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
@@ -47,6 +52,13 @@
                     @foreach($image::image($id) as $image)
                         var file = {name:'{{$image->filename}}', size:'{{$image->size}}'};
                         this.options.addedfile.call(this, file);
+                        file.previewElement.onclick=function()
+                        {
+                            window.open(
+                                    '{{Request::root()}}/{{$image->id}}',
+                                    '_blank' // <- This is what makes it open in a new window.
+                            );
+                        };
                         this.createThumbnailFromUrl(file,'{{Request::root()}}/{{$image->id}}');
                         // Make sure that there is no progress bar, etc...
                         this.options.complete.call(this, file);
