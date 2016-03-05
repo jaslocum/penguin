@@ -38,7 +38,7 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::post('{image}','ImageController@update');
 
-    Route::get('{image}','ImageController@show');
+    Route::get('{image}','ImageController@get');
 
     Route::get('{image}/index','ImageController@index');
 

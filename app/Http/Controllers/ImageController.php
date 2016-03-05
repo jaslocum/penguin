@@ -151,7 +151,7 @@ class ImageController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function get($id)
     {
         // find the first image stored for $id
         $image_rec = Image::where(compact('id'))->first();
