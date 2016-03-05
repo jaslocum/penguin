@@ -37,36 +37,34 @@ class BucketController extends Controller
                 // find and return the image, if possible
                 if (isset($image_recs)) {
 
-                    $json_image_recs="";
+                    $json = $image_recs->toJson();
 
-                    foreach ($image_recs as $image_rec) {
-                        $json = $image_rec->toJson();
-                        $json = substr($json, 0, -1);
-                        $json .= ',';
-                        $json .= '"description":"' . $description . '",';
-                        $json .= '"category":"' . $category . '",';
-                        $json .= '"key":"' . $key . '"';
-                        $json .= '}';
-                        $json_image_recs .= $json;
-                    }
+                    $extra = ',';
+                    $extra .= '"description":"' . $description . '",';
+                    $extra .= '"category":"' . $category . '",';
+                    $extra .= '"key":"' . $key . '"';
+                    $extra .= '}';
+
+                    $json = str_replace('}',$extra,$json);
 
                     // return all info in image table for category and key key pair,
                     // $image_rec = json_encode($image_rec, JSON_PRETTY_PRINT);
-                    if (strlen($json_image_recs)>0){
 
-                        return Response::create($json_image_recs,200);
+                        return Response::create($json,200);
 
-                    } else {
+                } else {
 
-                        return Response::create("<h1>$category, $key: no images in bucket</h1>", 404);
-
-                    }
+                    return Response::create("<h1>$category, $key: no images in bucket</h1>", 404);
 
                 }
 
-            }
+            } else {
 
-        return Response::create("<h1>$category, $key: not found</h1>", 404);
+
+            return Response::create("<h1>$category, $key: no bucket</h1>", 404);
+
+        }
+
     }
 
     /**
