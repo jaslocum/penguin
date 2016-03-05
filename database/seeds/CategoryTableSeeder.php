@@ -17,14 +17,6 @@ class CategoryTableSeeder extends Seeder
 
         DB::table('category')->insert([
             'id' => 1,
-            'category' => 'penguin',
-            'description' => 'category to hold images for this image server',
-            'mime' => 'image/jpg, image/jpeg, image/png',
-            'max_size_MB' => '5'
-        ]);
-
-        DB::table('category')->insert([
-            'id' => 2,
             'category' => 'image',
             'description' => 'category for images accessed by image id only',
             'mime' => 'image/jpg, image/jpeg, image/png',

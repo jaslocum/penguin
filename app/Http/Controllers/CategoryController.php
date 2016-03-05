@@ -111,7 +111,7 @@ class CategoryController extends Controller
 
         if ($validator->fails()) {
 
-            flash('Category', 'Category must contain at least one lette.', 'info');
+            flash('Category', 'Category must contain at least one letter.', 'info');
             return false;
 
         }
@@ -123,7 +123,7 @@ class CategoryController extends Controller
 
         if ($validator->fails()) {
 
-            flash('Category', 'A category can not be penguin or image.', 'info');
+            flash('Category', 'A category can not be image.', 'info');
             return false;
 
         }
