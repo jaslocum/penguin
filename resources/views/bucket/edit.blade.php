@@ -21,6 +21,11 @@
     <script>
             Dropzone.options.imageForm = {
                 init: function () {
+                    this.on("addedfile",
+                        function(file) {
+                            alert("Added file.");
+                        }
+                    );
                     this.on("complete",
                         function(){
                             if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
