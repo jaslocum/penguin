@@ -136,30 +136,40 @@ if ($result->num_rows > 0) {
             //Open file as stream to upload
             $body = fopen($filePath, 'r');
 
-            if ($body) {
-                $resultPost = $client->post($uri, [
-                    'cookies' => $jar,
-                    'multipart' => [
-                        [
-                            'name' => 'description',
-                            'contents' => $description,
-                        ],
-                        [
-                            'name' => '_token',
-                            'contents' => $session_token['_token'],
-                        ],
-                        [
-                            'name' => "file",
-                            'contents' => $body,
-                            'filename' => "$WoImageId.jpg",
-                            'type' => $mime,
-                        ],
-                    ]
-                ]);
+            try {
+                if ($body) {
+                    $resultPost = $client->post($uri, [
+                        'cookies' => $jar,
+                        'multipart' => [
+                            [
+                                'name' => 'description',
+                                'contents' => $description,
+                            ],
+                            [
+                                'name' => '_token',
+                                'contents' => $session_token['_token'],
+                            ],
+                            [
+                                'name' => "file",
+                                'contents' => $body,
+                                'filename' => "$WoImageId.jpg",
+                                'type' => $mime,
+                            ],
+                        ]
+                    ]);
 
-                $image_id = $resultPost->getHeaders()['image_id'][0];
-                $file_path = $resultPost->getHeaders()['file_path'][0];
-                echo "History: $workorder, WoPartID: $PartID, filePath: $filePath, mime: $mime, image_id:$image_id, file_path: $file_path\r\n";
+                    $image_id = $resultPost->getHeaders()['image_id'][0];
+                    $file_path = $resultPost->getHeaders()['file_path'][0];
+                    echo "History: $workorder, WoPartID: $PartID, filePath: $filePath, mime: $mime, image_id:$image_id, file_path: $file_path\r\n";
+                }
+            } catch (Exception $e) {
+                /*** show the error message ***/
+                echo "\r\n";
+                var_dump($e->getResponse()->getBody()->getContents());
+                echo "\r\n";
+
+                init_session($url_base, $client, $jar, $session_token);
+
             }
         }
     }
@@ -230,6 +240,7 @@ if ($result->num_rows > 0) {
                 }
 
             } catch (Exception $e) {
+
                 /*** show the error message ***/
                 echo "\r\n";
                 var_dump($e->getResponse()->getBody()->getContents());
