@@ -199,6 +199,12 @@ class Bucket extends Model
 
             $description = $request->header('description');
 
+            $parameter_mark = strpos($description,";");
+
+            if ($parameter_mark){
+                $description = substr($description,0,$parameter_mark);
+            }
+
             if( isset($description) ) {
 
                 return $description;
