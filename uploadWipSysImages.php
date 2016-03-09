@@ -88,7 +88,7 @@ if ($result->num_rows > 0) {
 
                 $image_id = $resultPost->getHeaders()['image_id'][0];
                 $file_path = $resultPost->getHeaders()['file_path'][0];
-                echo "WorkOrder: $workorder, WoPartID: $PartID, filePath: $filePath, mime: $mime, image_id:$image_id, file_path: $file_path\r\n";
+                echo "eoWorkOrder: $workorder, WoPartID: $PartID, filePath: $filePath, mime: $mime, image_id:$image_id, file_path: $file_path\r\n";
             }
         }
     }
@@ -164,7 +164,7 @@ if ($result->num_rows > 0) {
 
                     $image_id = $resultPost->getHeaders()['image_id'][0];
                     $file_path = $resultPost->getHeaders()['file_path'][0];
-                    echo "History: $workorder, WoPartID: $PartID, filePath: $filePath, mime: $mime, image_id:$image_id, file_path: $file_path\r\n";
+                    echo "eoHistory: $workorder, WoPartID: $PartID, filePath: $filePath, mime: $mime, image_id:$image_id, file_path: $file_path\r\n";
                 }
             } catch (Exception $e) {
                 /*** show the error message ***/
