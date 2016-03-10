@@ -132,7 +132,7 @@ if ($result->num_rows > 0) {
 
         $fileName = "$WoImageId.jpg";
         $filePath = $path.$fileName;
-        $uri = $url_base."woimg/$workorder";
+        $uri = $url_base."eowoimg/$workorder";
         $description = "$custCode, $process, $partNum";
 
         if ($WoImageId!=$PtImageId and $WoImageId>0) {
