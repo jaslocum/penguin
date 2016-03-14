@@ -13,6 +13,6 @@ class VerifyCsrfToken extends BaseVerifier
      */
     protected $except = [
         //enough!
-        'skipToCscrfRoutes' => '*'
+        //'skipToCscrfRoutes' => '*'
     ];
 }
