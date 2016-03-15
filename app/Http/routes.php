@@ -52,6 +52,8 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('{category}/{key}/index', 'BucketController@index');
 
+    Route::get('{category}/{key}/show', 'BucketController@get');
+
     Route::get('{category}/{key}/create', 'BucketController@edit');
 
     Route::get('{category}/{key}/edit', 'BucketController@edit');
