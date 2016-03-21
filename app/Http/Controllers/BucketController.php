@@ -9,6 +9,8 @@ use App\helpers;
 use Illuminate\Http\Request;
 use Mockery\Loader\RequireLoaderTest;
 use Symfony\Component\HttpFoundation\Response;
+use GuzzleHttp\Client;
+use GuzzleHttp\Cookie\CookieJar;
 
 class BucketController extends Controller
 {
@@ -50,7 +52,7 @@ class BucketController extends Controller
                     // return all info in image table for category and key key pair,
                     // $image_rec = json_encode($image_rec, JSON_PRETTY_PRINT);
 
-                        return Response::create($json,200);
+                    return Response::create($json,200);
 
                 } else {
 
@@ -248,6 +250,24 @@ class BucketController extends Controller
             $alt_filename = Bucket::getAltFilename($request);
             if(isset($alt_category) && isset($alt_key)){
                 $find_alt_on_fail = true;
+            } else {
+                $alt_image = Image::getAltImage($request);
+                if(isset($alt_image)) {
+                    if (strpos($alt_image,"/")==0){
+                        $alt_image = substr($alt_image,1);
+                    }
+                    $route_pieces = explode('/', $alt_image);
+                    if (isset($route_pieces[0])) {
+                        $alt_category = $route_pieces[0];
+                    }
+                    if (isset($route_pieces[1])) {
+                        $alt_key = $route_pieces[1];
+                    }
+                    if (isset($route_pieces[2])) {
+                        $alt_filename = $route_pieces[2];
+                    }
+                    $find_alt_on_fail = true;
+                }
             }
         }
 
@@ -449,6 +469,15 @@ class BucketController extends Controller
         }
 
         return Response::create("<h1>$category, $key: bucket not found</h1>", 404);
+
+    }
+
+    function init_session($url_base, &$client, &$jar, &$session_token){
+
+        $session = $url_base."/session";
+        $sessionResult = $client->get("$session",['cookies'=>$jar]);
+        $sessionBody = str_replace('&quot;','"',(string) $sessionResult->getBody());
+        $session_token = (array) json_decode($sessionBody);
 
     }
 

@@ -77,5 +77,45 @@ class Image extends Model
 
     }
 
+    static public function getAltImage($request){
+
+        // set alt_image if passed as a header or url parameter
+        if(isset($request->alt_image)) {
+
+            return $request->alt_image;
+
+        } else {
+
+            $alt_image = $request->header('alt_image');
+
+            $parameter_mark = strpos($alt_image,";");
+
+            if ($parameter_mark){
+
+                $alt_image = substr($alt_image,0,$parameter_mark);
+
+            } else {
+
+                $first_chr = substr($alt_image,0,1);
+
+                if($first_chr==";"){
+                    $alt_image="";
+                }
+
+            }
+
+            if( isset($alt_image) ) {
+
+                return $alt_image;
+
+            } else {
+
+                return null;
+
+            }
+
+        }
+
+    }
 
 }
