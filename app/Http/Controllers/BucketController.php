@@ -230,13 +230,26 @@ class BucketController extends Controller
     }
 
     /**
-     * @param string $category
-     * @param string $key
-     * @param string $filename
+     * @param Request $request
+     * @param $category
+     * @param $key
+     * @param null $filename
      * @return Response
      */
-    public function get($category, $key, $filename = null)
+    public function get(Request $request, $category, $key, $filename = null)
     {
+
+        $find_alt_on_fail = false;
+
+        // get alternate category/key/filename to find if primary image request fails
+        if(isset($request)) {
+            $alt_category = Bucket::getAltCategory($request);
+            $alt_key = Bucket::getAltKey($request);
+            $alt_filename = Bucket::getAltFilename($request);
+            if(isset($alt_category) && isset($alt_key)){
+                $find_alt_on_fail = true;
+            }
+        }
 
         // find category and key key pair
         $bucket_rec = Bucket::getBucket($category, $key);
@@ -296,28 +309,47 @@ class BucketController extends Controller
 
                 } else {
 
-                    return Response::create("<h1>$category, $key: image file not found</h1>",
-                        404,
-                        array(
-                            'id' => $image_id,
-                            'content-type' => $mime,
-                            'description' => $description,
-                            'filename' => $filename,
-                            'size' => $size,
-                            'md5' => $md5,
-                            'deleted' => $deleted
-                        )
-                    );
+                    if ($find_alt_on_fail){
+
+                        return BucketController::get(null,$alt_category,$alt_key,$alt_filename);
+
+                    } else {
+
+                        return Response::create("<h1>$category, $key: image file not found</h1>",
+                            404,
+                            array(
+                                'id' => $image_id,
+                                'content-type' => $mime,
+                                'description' => $description,
+                                'filename' => $filename,
+                                'size' => $size,
+                                'md5' => $md5,
+                                'deleted' => $deleted
+                            )
+                        );
+
+                    }
 
                 }
 
             } else {
 
-                return Response::create("<h1>$category, $key, $filename: image not in bucket</h1>", 404);
+                if ($find_alt_on_fail){
+                    return BucketController::get(null,$alt_category,$alt_key,$alt_filename);
+                }else{
+                    return Response::create("<h1>$category, $key, $filename: image not in bucket</h1>", 404);
+                }
             }
         }
+        if ($find_alt_on_fail){
 
-        return Response::create("<h1>$category, $key: bucket not found</h1>", 404);
+            return BucketController::get(null,$alt_category,$alt_key,$alt_filename);
+
+        }else {
+
+            return Response::create("<h1>$category, $key: bucket not found</h1>", 404);
+
+        }
 
     }
 

@@ -198,9 +198,6 @@ class Bucket extends Model
         } else {
 
             $description = $request->header('description');
-
-            $length = strlen($description);
-
             $parameter_mark = strpos($description,";");
 
             if ($parameter_mark){
@@ -220,6 +217,129 @@ class Bucket extends Model
             if( isset($description) ) {
 
                 return $description;
+
+            } else {
+
+                return null;
+
+            }
+
+        }
+
+    }
+
+    static public function getAltCategory($request){
+
+        // set alt_category if passed as a header or url parameter
+        if(isset($request->alt_category)) {
+
+            return $request->alt_category;
+
+        } else {
+
+            $alt_category = $request->header('alt_category');
+
+            $parameter_mark = strpos($alt_category,";");
+
+            if ($parameter_mark){
+
+                $alt_category = substr($alt_category,0,$parameter_mark);
+
+            } else {
+
+                $first_chr = substr($alt_category,0,1);
+
+                if($first_chr==";"){
+                    $alt_category="";
+                }
+
+            }
+
+            if( isset($alt_category) ) {
+
+                return $alt_category;
+
+            } else {
+
+                return null;
+
+            }
+
+        }
+
+    }
+
+    static public function getAltKey($request){
+
+        // set alt_key if passed as a header or url parameter
+        if(isset($request->alt_key)) {
+
+            return $request->alt_key;
+
+        } else {
+
+            $alt_key = $request->header('alt_key');
+
+            $parameter_mark = strpos($alt_key,";");
+
+            if ($parameter_mark){
+
+                $alt_key = substr($alt_key,0,$parameter_mark);
+
+            } else {
+
+                $first_chr = substr($alt_key,0,1);
+
+                if($first_chr==";"){
+                    $alt_key="";
+                }
+
+            }
+
+            if( isset($alt_key) ) {
+
+                return $alt_key;
+
+            } else {
+
+                return null;
+
+            }
+
+        }
+
+    }
+
+    static public function getAltFilename($request){
+
+        // set alt_filename if passed as a header or url parameter
+        if(isset($request->alt_filename)) {
+
+            return $request->alt_filename;
+
+        } else {
+
+            $alt_filename = $request->header('alt_filename');
+
+            $parameter_mark = strpos($alt_filename,";");
+
+            if ($parameter_mark){
+
+                $alt_filename = substr($alt_filename,0,$parameter_mark);
+
+            } else {
+
+                $first_chr = substr($alt_filename,0,1);
+
+                if($first_chr==";"){
+                    $alt_filename="";
+                }
+
+            }
+
+            if( isset($alt_filename) ) {
+
+                return $alt_filename;
 
             } else {
 
