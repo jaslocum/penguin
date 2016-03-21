@@ -236,7 +236,7 @@ class BucketController extends Controller
      * @param null $filename
      * @return Response
      */
-    public function get(Request $request, $category, $key, $filename = null)
+    public function get(Request $request = null, $category, $key, $filename = null)
     {
 
         $find_alt_on_fail = false;
@@ -335,9 +335,13 @@ class BucketController extends Controller
             } else {
 
                 if ($find_alt_on_fail){
+
                     return BucketController::get(null,$alt_category,$alt_key,$alt_filename);
+
                 }else{
+
                     return Response::create("<h1>$category, $key, $filename: image not in bucket</h1>", 404);
+
                 }
             }
         }
