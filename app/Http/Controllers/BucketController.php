@@ -9,6 +9,8 @@ use App\helpers;
 use Illuminate\Http\Request;
 use Mockery\Loader\RequireLoaderTest;
 use Symfony\Component\HttpFoundation\Response;
+use GuzzleHttp\Client;
+use GuzzleHttp\Cookie\CookieJar;
 
 class BucketController extends Controller
 {
@@ -248,6 +250,22 @@ class BucketController extends Controller
             $alt_filename = Bucket::getAltFilename($request);
             if(isset($alt_category) && isset($alt_key)){
                 $find_alt_on_fail = true;
+            } else {
+                $alt_image = Image::getAltImage($request);
+                if(isset($alt_image)){
+
+                    $client = new Client;
+                    $jar = new CookieJar();
+                    $session_token = array();
+                    $url_base = $request->url();
+
+                    init_session($url_base, $client, $jar, $session_token);
+
+                    $url = $url_base.$alt_image;
+
+                    return $client->get($url);
+
+                }
             }
         }
 
