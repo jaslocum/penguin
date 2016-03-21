@@ -77,7 +77,7 @@ class Image extends Model
 
     }
 
-    static public function getAltFilename($request){
+    static public function getAltImage($request){
 
         // set alt_image if passed as a header or url parameter
         if(isset($request->alt_image)) {
