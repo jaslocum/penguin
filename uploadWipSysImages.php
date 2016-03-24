@@ -24,7 +24,7 @@ if ($conn->connect_error) {
 }
 
 //upload Eastside active work order images
-
+/**
 $sql =
     "
       SELECT
@@ -96,9 +96,11 @@ if ($result->num_rows > 0) {
 } else {
     echo "0 results\r\n";
 }
+**/
 
 //upload Eastside history work order images
 
+/**
 $sql =
     "
       SELECT
@@ -167,7 +169,6 @@ if ($result->num_rows > 0) {
                     echo "eoHistory: $workorder, WoPartID: $PartID, filePath: $filePath, mime: $mime, image_id:$image_id, file_path: $file_path\r\n";
                 }
             } catch (Exception $e) {
-                /*** show the error message ***/
                 echo "\r\n";
                 var_dump($e->getResponse()->getBody()->getContents());
                 echo "\r\n";
@@ -181,6 +182,8 @@ if ($result->num_rows > 0) {
 } else {
     echo "0 results\r\n";
 }
+
+**/
 
 //upload Surface active work order images
 
@@ -258,6 +261,7 @@ if ($result->num_rows > 0) {
 
 //upload Surface history work order images
 
+/**
 $sql =
     "
       SELECT
@@ -326,7 +330,6 @@ if ($result->num_rows > 0) {
                     echo "History: $workorder, WoPartID: $PartID, filePath: $filePath, mime: $mime, image_id:$image_id, file_path: $file_path\r\n";
                 }
             } catch (Exception $e) {
-                /*** show the error message ***/
                 echo "\r\n";
                 var_dump($e->getResponse()->getBody()->getContents());
                 echo "\r\n";
@@ -340,6 +343,7 @@ if ($result->num_rows > 0) {
 } else {
     echo "0 results\r\n";
 }
+**/
 
 //upload Surface part images
 
