@@ -24,7 +24,7 @@ if ($conn->connect_error) {
 }
 
 //upload Eastside active work order images
-/**
+//**
 $sql =
     "
       SELECT
@@ -96,11 +96,11 @@ if ($result->num_rows > 0) {
 } else {
     echo "0 results\r\n";
 }
-**/
+//**/
 
 //upload Eastside history work order images
 
-/**
+//**
 $sql =
     "
       SELECT
@@ -183,7 +183,7 @@ if ($result->num_rows > 0) {
     echo "0 results\r\n";
 }
 
-**/
+//**/
 
 //upload Surface active work order images
 
@@ -261,7 +261,7 @@ if ($result->num_rows > 0) {
 
 //upload Surface history work order images
 
-/**
+//**
 $sql =
     "
       SELECT
@@ -343,7 +343,7 @@ if ($result->num_rows > 0) {
 } else {
     echo "0 results\r\n";
 }
-**/
+//**/
 
 //upload Surface part images
 
