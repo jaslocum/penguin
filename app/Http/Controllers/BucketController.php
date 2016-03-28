@@ -238,7 +238,7 @@ class BucketController extends Controller
      * @param null $filename
      * @return Response
      */
-    public function get(Request $request = null, $category, $key, $filename = null)
+    public function show(Request $request = null, $category, $key, $filename = null)
     {
 
         $find_alt_on_fail = false;
@@ -331,22 +331,11 @@ class BucketController extends Controller
 
                     if ($find_alt_on_fail){
 
-                        return BucketController::get(null,$alt_category,$alt_key,$alt_filename);
+                        return BucketController::show(null,$alt_category,$alt_key,$alt_filename);
 
                     } else {
 
-                        return Response::create("<h1>$category, $key: image file not found</h1>",
-                            404,
-                            array(
-                                'id' => $image_id,
-                                'content-type' => $mime,
-                                'description' => $description,
-                                'filename' => $filename,
-                                'size' => $size,
-                                'md5' => $md5,
-                                'deleted' => $deleted
-                            )
-                        );
+                        return Response::create("<h1>$category, $key: image file not found</h1>", 404 );
 
                     }
 
@@ -356,7 +345,7 @@ class BucketController extends Controller
 
                 if ($find_alt_on_fail){
 
-                    return BucketController::get(null,$alt_category,$alt_key,$alt_filename);
+                    return BucketController::show(null,$alt_category,$alt_key,$alt_filename);
 
                 }else{
 
@@ -367,7 +356,7 @@ class BucketController extends Controller
         }
         if ($find_alt_on_fail){
 
-            return BucketController::get(null,$alt_category,$alt_key,$alt_filename);
+            return BucketController::show(null,$alt_category,$alt_key,$alt_filename);
 
         }else {
 
