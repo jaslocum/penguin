@@ -414,20 +414,22 @@ class BucketController extends Controller
                 $md5 = $image_rec->md5;
                 $md5path = md5path($md5);
                 $md5filename = md5filename($md5);
-
+                
+                // mark file deleted
+                $image_rec->deleted = true;
+                $image_rec->save();
+                
                 // find and return the image, if possible
                 if (file_exists($md5path . $md5filename)) {
 
                     unlink($md5path . $md5filename);
 
-                    // mark file deleted
-                    $image_rec->deleted = true;
-                    $image_rec->save();
-
                     // return file
                     return Response::create(null,
                         200,
-                        array('content-type' => $mime,
+                        array(
+                            'id' => $image_id,
+                            'content-type' => $mime,
                             'description' => $description,
                             'filename' => $filename,
                             'md5' => $md5,
