@@ -514,7 +514,7 @@ class ImageController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Un-delete.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

@@ -329,13 +329,13 @@ class BucketController extends Controller
 
                 } else {
 
-                    if ($find_alt_on_fail){
+                    if ($find_alt_on_fail) {
 
-                        return BucketController::show(null,$alt_category,$alt_key,$alt_filename);
+                        return BucketController::show(null, $alt_category, $alt_key, $alt_filename);
 
                     } else {
 
-                        return Response::create("<h1>$category, $key: image file not found</h1>", 404 );
+                        return Response::create("<h1>$category, $key: image file not found</h1>", 404);
 
                     }
 
@@ -354,6 +354,7 @@ class BucketController extends Controller
                 }
             }
         }
+
         if ($find_alt_on_fail){
 
             return BucketController::show(null,$alt_category,$alt_key,$alt_filename);
@@ -394,9 +395,10 @@ class BucketController extends Controller
 
             } else {
 
-                // find the first image record stored for the category and key key pair,
-                // if possible
-                $image_rec = Image::where(compact('bucket_id'))->first();
+                // find the first image record stored for the category and key key pair
+                // that is not deleted
+                $deleted = false;
+                $image_rec = Image::where(compact('bucket_id','deleted'))->orderby('id')->first();
 
             }
 
@@ -422,7 +424,8 @@ class BucketController extends Controller
                 // find and return the image, if possible
                 if (file_exists($md5path . $md5filename)) {
 
-                    unlink($md5path . $md5filename);
+                    //soft delete - not currently removing file
+                    //unlink($md5path . $md5filename);
 
                     // return file
                     return Response::create(null,
@@ -434,6 +437,102 @@ class BucketController extends Controller
                             'filename' => $filename,
                             'md5' => $md5,
                             'deleted' => true
+                        )
+                    );
+
+                } else {
+
+                    return Response::create("<h1>$category, $key, $filename: file not found</h1>",
+                        404,
+                        array(
+                            'id' => $image_id,
+                            'content-type' => $mime,
+                            'description' => $description,
+                            'filename' => $filename,
+                            'size' => $size,
+                            'md5' => $md5,
+                            'deleted' => $deleted
+                        )
+                    );
+                }
+
+            } else {
+
+                return Response::create("<h1>$category, $key, $filename: image not defined</h1>", 404);
+            }
+        }
+
+        return Response::create("<h1>$category, $key: bucket not found</h1>", 404);
+
+    }
+
+    /**
+     * un-delete image
+     *
+     * @param $category
+     * @param $key
+     * @param null $filename
+     * @return Response
+     */
+    public function restore($category, $key, $filename = null)
+    {
+
+        // find category and key key pair
+        $bucket_rec = Bucket::getBucket($category, $key);
+
+        if(isset($bucket_rec)) {
+
+            // test if image exists for bucket_id and filename in image table
+            $bucket_id = $bucket_rec->id;
+            $description = $bucket_rec->description;
+
+            if (isset($filename)){
+
+                // find the first image stored for the category and key key pair
+                // for the filename given.
+                $image_rec = Image::where(compact('bucket_id', 'filename'))->first();
+
+            } else {
+
+                // find the first image record stored for the category and key key pair
+                // that is not deleted
+                $deleted = true;
+                $image_rec = Image::where(compact('bucket_id','deleted'))->orderby('id','desc')->first();
+
+            }
+
+            // find and return the image, if possible
+            if (isset($image_rec)) {
+
+                // load information stored in image table
+                $image_id = $image_rec->id;
+                $size = $image_rec->size;
+                $mime = $image_rec->mime;
+                $filename = $image_rec->filename;
+                $deleted = $image_rec->deleted;
+
+                // get locate stored from md5 hash save in image table
+                $md5 = $image_rec->md5;
+                $md5path = md5path($md5);
+                $md5filename = md5filename($md5);
+
+                // mark file deleted
+                $image_rec->deleted = false;
+                $image_rec->save();
+
+                // find and return the image, if possible
+                if (file_exists($md5path . $md5filename)) {
+
+                    // return file
+                    return Response::create(null,
+                        200,
+                        array(
+                            'id' => $image_id,
+                            'content-type' => $mime,
+                            'description' => $description,
+                            'filename' => $filename,
+                            'md5' => $md5,
+                            'deleted' => false
                         )
                     );
 
