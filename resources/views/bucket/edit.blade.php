@@ -1,5 +1,3 @@
-@inject('image','App\Http\Utilities\Images')
-
 @extends('layout')
 
 @section('content')
@@ -43,7 +41,7 @@
                             xhttp.send();
                         }
                     );
-                    @foreach($image::images($bucket_id) as $image)
+                    @foreach($images as $image)
                             var file = {name:'{{$image->filename}}', size:'{{$image->size}}'};
                             this.options.addedfile.call(this, file);
                             file.previewElement.onclick=function()

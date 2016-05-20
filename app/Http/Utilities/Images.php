@@ -14,8 +14,18 @@ class Images
     public static function images($bucket_id)
     {
         $deleted = false;
+
         $images = Image::orderBy('id')->where(compact('bucket_id', 'deleted'))->get();
-        return $images;
+
+        if(isset($images)) {
+
+            return $images;
+            
+        } else{
+
+            return null;
+
+        }
     }
 
     /**
@@ -25,8 +35,18 @@ class Images
     public static function image($id)
     {
         $deleted = false;
-        $image = Image::where(compact('id', 'deleted'))->get();
-        return $image;
+
+        $image = Image::where(compact('id', 'deleted'))->first();
+
+        if(isset($image)) {
+
+            return $image;
+
+        } else{
+
+            return null;
+
+        }
     }
 
 }

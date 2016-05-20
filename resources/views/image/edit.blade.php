@@ -1,5 +1,3 @@
-@inject('image','App\Http\Utilities\Images')
-
 @extends('layout')
 
 @section('content')
@@ -53,20 +51,18 @@
                             xhttp.send();
                         }
                     );
-                    @foreach($image::image($id) as $image)
-                        var file = {name:'{{$image->filename}}', size:'{{$image->size}}'};
-                        this.options.addedfile.call(this, file);
-                        file.previewElement.onclick=function()
-                        {
-                            window.open(
-                                    '{{Request::root()}}/{{$image->id}}',
-                                    '_blank' // <- This is what makes it open in a new window.
-                            );
-                        };
-                        this.createThumbnailFromUrl(file,'{{Request::root()}}/{{$id}}');
-                        // Make sure that there is no progress bar, etc...
-                        this.options.complete.call(this, file);
-                    @endforeach
+                    var file = {name:'{{$image_rec->filename}}', size:'{{$image_rec->size}}'};
+                    this.options.addedfile.call(this, file);
+                    file.previewElement.onclick=function()
+                    {
+                        window.open(
+                                '{{Request::root()}}/{{$id}}',
+                                '_blank' // <- This is what makes it open in a new window.
+                        );
+                    };
+                    this.createThumbnailFromUrl(file,'{{Request::root()}}/{{$id}}');
+                    // Make sure that there is no progress bar, etc...
+                    this.options.complete.call(this, file);
                 },
                 maxFilesize: {{$category_rec->max_size_MB}},
                 acceptedFiles: '{{$category_rec->mime}}',

@@ -113,10 +113,11 @@ class BucketController extends Controller
 
         $bucket_id = $bucket_rec->id;
         $category_rec = Bucket::getCategoryRec($bucket_id);
+        $images = Image::images(@$bucket_id);
 
         if(isset($category_rec)){
 
-            return view('bucket.edit', compact('category','key','bucket_id', 'category_rec', 'description'));
+            return view('bucket.edit', compact('category','key','bucket_id', 'category_rec', 'images', 'description'));
 
         } else {
 
