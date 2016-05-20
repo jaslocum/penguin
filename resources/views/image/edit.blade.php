@@ -6,7 +6,7 @@
     <h3>
         <br>
         <p>{image}: {{$id}}</p>
-        <p>{category}: {{$category}}</p>
+        <p>{category}: {{$category_rec->category}}</p>
         <p>{key}:{{$key}}</p>
         @if(strlen($description)>0)<p>{description}: {{$description}}</p>
         @endif
@@ -14,7 +14,7 @@
     </h3>
     <hr>
     <div class="row">
-        <form id="imageForm" method="post" action="/{{$id}}" class="dropzone" category="{{$category}}" key="{{$key}}">
+        <form id="imageForm" method="post" action="/{{$id}}" class="dropzone" category="{{$category_rec->category}}" key="{{$key}}">
             {{csrf_field()}}
             @include('errors.show')
         </form>

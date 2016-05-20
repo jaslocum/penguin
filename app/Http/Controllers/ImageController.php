@@ -229,7 +229,6 @@ class ImageController extends Controller
     public function edit(Request $request, $id = null)
     {
 
-        $category = 'image';
         $description = Bucket::getDescription($request);
 
         if (isset($id)) {
@@ -261,11 +260,11 @@ class ImageController extends Controller
 
                         if(isset($category_rec)){
 
-                            return view('image.edit', compact('category', 'key', 'id', 'bucket_id', 'category_rec', 'description'));
+                            return view('image.edit', compact('key', 'id', 'bucket_id', 'category_rec', 'description'));
 
                         } else {
 
-                            return Response::create("<h1>$category: category not found</h1>", 404);
+                            return Response::create("<h1>$key: category not found for bucket</h1>", 404);
 
                         }
 
