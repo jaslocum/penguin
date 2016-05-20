@@ -34,6 +34,7 @@ class Bucket extends Model
         //create bucket record
         $bucket_rec = new Bucket;
         $category_rec = Category::where(compact('category'))->first();
+
         if (!isset($category_rec)){
             $category_rec = Category::newCategory($category);
             if(!isset($category_rec)){
@@ -42,11 +43,12 @@ class Bucket extends Model
         }
 
         $bucket_rec->category_id = $category_rec->id;
+
         if(isset($description)){
             $bucket_rec->description = $description;
         }
 
-        if ($bucket_rec->save()){
+        if ($bucket_rec->save()) {
 
             if(isset($key)) {
                 $bucket_rec->key = $key;
@@ -60,10 +62,9 @@ class Bucket extends Model
                 return null;
             }
 
-        } else {
+        }else{
 
             return null;
-
         }
 
     }

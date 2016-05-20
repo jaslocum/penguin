@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Image;
-use App\Http\Utilities\Images;
 use App\Bucket;
 use App\BucketController;
 use App\Category;
@@ -235,7 +234,7 @@ class ImageController extends Controller
         if (isset($id)) {
 
             // find the first image stored for $id
-            $image_rec = Images::image($id);
+            $image_rec = Image::image($id);
 
             if (isset($image_rec)) {
 
@@ -301,15 +300,13 @@ class ImageController extends Controller
             if (isset($bucket_rec)) {
 
                 $bucket_id = $bucket_rec->id;
-                $key = $bucket_id;
+                $key = $bucket_rec->key;
 
                 $image_rec = Image::newImage($bucket_id);
 
                 if (isset($image_rec)) {
 
                     $id = $image_rec->id;
-                    $image_rec->bucket_id = $bucket_id;
-                    $image_rec = Image::updateImage($image_rec);
 
                     if (isset($image_rec)){
 
@@ -317,7 +314,7 @@ class ImageController extends Controller
 
                         if(isset($category_rec)){
 
-                            return view('image.edit', compact('category', 'key', 'id', 'bucket_id', 'category_rec', 'image_rec', 'description'));
+                            return view('image.create', compact('category', 'key', 'id', 'bucket_id', 'category_rec', 'image_rec', 'description'));
 
                         } else {
 
@@ -347,7 +344,6 @@ class ImageController extends Controller
 
     }
 
-
     /**
      * @param Request $request
      * @param $id
@@ -370,13 +366,11 @@ class ImageController extends Controller
 
         if (isset($image_rec)) {
 
-            //get ids
-            $id = $image_rec->id;
             $bucket_id = $image_rec->bucket_id;
             $md5 = $image_rec->md5;
 
             // get bucket
-            $bucket_rec = Bucket::where(compact('id',$bucket_id))->first();
+            $bucket_rec = Bucket::where(compact($bucket_id))->first();
 
             if (isset($bucket_rec)) {
 
