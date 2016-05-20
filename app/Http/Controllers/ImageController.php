@@ -317,7 +317,7 @@ class ImageController extends Controller
 
                         if(isset($category_rec)){
 
-                            return view('image.edit', compact('category', 'key', 'id', 'bucket_id', 'category_rec', 'description'));
+                            return view('image.edit', compact('category', 'key', 'id', 'bucket_id', 'category_rec', 'image_rec', 'description'));
 
                         } else {
 
