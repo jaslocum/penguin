@@ -178,30 +178,39 @@ class ImageController extends Controller
             $md5path = md5path($md5);
             $md5filename = md5filename($md5);
 
-            // find and return the image, if possible
-            if (file_exists($md5path . $md5filename)) {
+            // do not return image if deleted is true
+            if ($deleted){
 
-                $content = file_get_contents($md5path . $md5filename);
+                return Response::create("<h1>$id: $filename has been deleted</h1>", 404);
 
-                // return file
-                return Response::create($content,
-                    200,
-                    array(
-                        'id' => $id,
-                        'content-type' => $mime,
-                        'description' => $description,
-                        'filename' => $filename,
-                        'size' => $size,
-                        'md5' => $md5,
-                        'deleted' => $deleted,
-                        'category' => $category,
-                        'key' => $key
-                    )
-                );
+            }else{
 
-            } else {
+                // find and return the image, if possible
+                if (file_exists($md5path . $md5filename)) {
 
-                return Response::create("<h1>$id: $filename not found</h1>", 404);
+                    $content = file_get_contents($md5path . $md5filename);
+
+                    // return file
+                    return Response::create($content,
+                        200,
+                        array(
+                            'id' => $id,
+                            'content-type' => $mime,
+                            'description' => $description,
+                            'filename' => $filename,
+                            'size' => $size,
+                            'md5' => $md5,
+                            'deleted' => $deleted,
+                            'category' => $category,
+                            'key' => $key
+                        )
+                    );
+
+                } else {
+
+                    return Response::create("<h1>$id: $filename not found</h1>", 404);
+
+                }
 
             }
 
@@ -479,6 +488,74 @@ class ImageController extends Controller
                         'size' => $size,
                         'md5' => $md5,
                         'deleted' => true
+                    )
+                );
+
+            } else {
+
+                return Response::create("<h1>$id: file not found</h1>",
+                    404,
+                    array(
+                        'id' => $image_id,
+                        'content-type' => $mime,
+                        'filename' => $filename,
+                        'size' => $size,
+                        'md5' => $md5,
+                        'deleted' => $deleted
+                    )
+                );
+            }
+
+        } else {
+
+            return Response::create("<h1>$id: image not defined</h1>", 404);
+        }
+
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+
+        $image_rec = Image::where(compact('id'))->first();
+
+        // find and return the image, if possible
+        if (isset($image_rec)) {
+
+            // load information stored in image table
+            $image_id = $image_rec->id;
+            $size = $image_rec->size;
+            $mime = $image_rec->mime;
+            $filename = $image_rec->filename;
+            $deleted = $image_rec->deleted;
+
+            // get locate stored from md5 hash save in image table
+            $md5 = $image_rec->md5;
+            $md5path = md5path($md5);
+            $md5filename = md5filename($md5);
+
+            // mark file deleted
+            $image_rec->deleted = false;
+            $image_rec->save();
+
+            // find and return the image, if possible
+            if (file_exists($md5path . $md5filename)) {
+
+                // return file
+                return Response::create(null,
+                    200,
+                    array(
+                        'id' => $image_id,
+                        'content-type' => $mime,
+                        'filename' => $filename,
+                        'size' => $size,
+                        'md5' => $md5,
+                        'deleted' => false
                     )
                 );
 
