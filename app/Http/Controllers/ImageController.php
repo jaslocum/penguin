@@ -466,7 +466,8 @@ class ImageController extends Controller
             // find and return the image, if possible
             if (file_exists($md5path . $md5filename)) {
 
-                unlink($md5path . $md5filename);
+                //use soft delete for now, just in case we need the image.
+                //unlink($md5path . $md5filename);
 
                 // return file
                 return Response::create(null,
