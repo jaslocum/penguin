@@ -22,6 +22,10 @@
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Request::root()}}/{category}/{key}/[{filename}/]destroy|delete</p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Request::root()}}/{image_id}/destroy|delete</p>
             <br>
+            <p>Restore an image from a  {category}/{key} bucket or an {image_id} bucket:<p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Request::root()}}/{category}/{key}/[{filename}/]restore|undelete</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{Request::root()}}/{image_id}/restore|undelete</p>
+            <br>
             <p>Web interface to define a {category} for images:<p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a href="category/">
