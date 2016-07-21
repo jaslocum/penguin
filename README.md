@@ -29,6 +29,13 @@ Delete an image from a {category}/{key} bucket or an {image_id} bucket:
      http://penguin/{image_id}/destroy|delete
 
 
+Restore an image from a {category}/{key} bucket or an {image_id} bucket:
+
+     http://penguin/{category}/{key}/[{filename}/]restore|undelete
+
+     http://penguin/{image_id}/restore|undelete
+
+
 Web interface to define a {category} for images:
 
       http://penguin/category
