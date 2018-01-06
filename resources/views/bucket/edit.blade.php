@@ -47,8 +47,8 @@
                             file.previewElement.onclick=function()
                             {
                                 window.open(
-                                        '{{Request::root()}}/{{$image->id}}',
-                                        '_blank' // <- This is what makes it open in a new window.
+                                        '{{Request::root()}}/{{$image->id}}'
+                                        //, '_blank' // <- This is what makes it open in a new window.
                                 );
                             };
                             this.createThumbnailFromUrl(file,'{{Request::root()}}/{{$image->id}}');
