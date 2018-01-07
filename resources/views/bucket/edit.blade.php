@@ -18,7 +18,8 @@
 
     <script>
             Dropzone.options.imageForm = {
-                init: function () {
+                init: function () {                
+                    document.title = '{{$category}}'
                     this.on("addedfile",
                         function() {
                             //
